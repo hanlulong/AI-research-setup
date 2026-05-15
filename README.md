@@ -9,9 +9,11 @@ This is a living collection. Each section captures what I've found useful — in
 ## Contents
 
 - [Windows](#windows)
+  - [Prerequisites](#windows-prereqs)
   - [Codex CLI](#codex-cli-windows)
   - [Claude Code](#claude-code-windows)
 - [Mac](#mac)
+  - [Prerequisites](#mac-prereqs)
   - [Codex CLI](#codex-cli-mac)
   - [Claude Code](#claude-code-mac)
 - [Shared](#shared)
@@ -21,7 +23,32 @@ This is a living collection. Each section captures what I've found useful — in
 
 ## Windows
 
-Tested on Windows 11. Most steps assume **Windows Terminal** with either PowerShell 7 or CMD. WSL2 is fine too and is called out where it differs.
+Tested on Windows 11. Most steps assume **Windows Terminal** with either PowerShell 7 or CMD. WSL2 is fine too.
+
+### <a id="windows-prereqs"></a>Prerequisites
+
+Both tools are installed via npm, so you need **Node.js (LTS, v22+)**. The easiest path is winget:
+
+```powershell
+winget install -e --id OpenJS.NodeJS.LTS
+```
+
+Alternatives: the official installer from [nodejs.org](https://nodejs.org/), or a version manager like [nvm-windows](https://github.com/coreybutler/nvm-windows) / [fnm](https://github.com/Schniz/fnm) if you want multiple Node versions side-by-side.
+
+Verify:
+
+```powershell
+node --version   # should print v22.x or higher
+npm --version
+```
+
+One more component, recommended for Codex CLI on Windows:
+
+```powershell
+winget install -e --id Microsoft.VCRedist.2015+.x64
+```
+
+Without the VC++ runtime, `codex` can exit silently after install ([issue #20827](https://github.com/openai/codex/issues/20827)).
 
 ### <a id="codex-cli-windows"></a>Codex CLI
 
@@ -29,34 +56,25 @@ Tested on Windows 11. Most steps assume **Windows Terminal** with either PowerSh
 
 #### Install
 
-Native Windows is supported — WSL is no longer required. Pick one:
-
 ```powershell
-# Recommended: winget (native)
-winget install -e --id OpenAI.Codex
-
-# Or: npm (cross-platform, needs Node.js 22+)
-npm install -g @openai/codex
-
-# Or: inside WSL2 Ubuntu
 npm install -g @openai/codex
 ```
 
-Then verify:
+Verify:
 
 ```powershell
 codex --version
 ```
 
-**Windows gotchas:**
+To update later:
 
-- **VC++ runtime** is required by the npm build. If `codex` exits silently, install it: `winget install -e --id Microsoft.VCRedist.2015+.x64`.
-- **Binary name** from winget can land as `codex-x86_64-pc-windows-msvc.exe`. If `codex` isn't found on PATH, alias it or rename.
-- **`rg` on PATH:** Codex shells out to ripgrep. winget installs it under `%LOCALAPPDATA%\Microsoft\WinGet\Links` — make sure that's on your `PATH`.
+```powershell
+npm update -g @openai/codex
+```
 
 #### Configure
 
-First-run authentication:
+First run:
 
 ```powershell
 codex
@@ -97,16 +115,8 @@ Useful slash commands inside Codex: `/init`, `/resume`, `/model`, `/permissions`
 
 #### Install
 
-Native Windows is the recommended path (no WSL needed).
-
 ```powershell
-# PowerShell
-irm https://claude.ai/install.ps1 | iex
-```
-
-```bat
-:: CMD
-curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
+npm install -g @anthropic-ai/claude-code
 ```
 
 Recommended companion: [**Git for Windows**](https://git-scm.com/downloads/win) — Claude Code uses Git Bash as its shell when present, which gives you a Unix-like environment for shell commands. Without it, it falls back to PowerShell.
@@ -117,9 +127,14 @@ Verify:
 claude --version
 ```
 
+To update later:
+
+```powershell
+npm update -g @anthropic-ai/claude-code
+```
+
 **Windows gotchas:**
 
-- **Pick the right install command for your shell:** PowerShell prompts look like `PS C:\...>`; CMD looks like `C:\...>` (no `PS`).
 - **Git Bash not auto-detected?** Point Claude Code at it explicitly in `~/.claude/settings.json`:
   ```json
   {
@@ -128,7 +143,6 @@ claude --version
     }
   }
   ```
-- The native installer **auto-updates** in the background. No `npm update -g` needed.
 
 #### Configure
 
@@ -185,24 +199,41 @@ A few first-10-minutes commands: `/help`, `/config`, `/resume`, `/compact`, `/me
 
 Tested on Apple Silicon (macOS 14+). Intel Macs work too unless noted.
 
+### <a id="mac-prereqs"></a>Prerequisites
+
+Both tools are installed via npm, so you need **Node.js (LTS, v22+)**. The easiest path is [Homebrew](https://brew.sh/):
+
+```bash
+brew install node
+```
+
+Alternatives: the official installer from [nodejs.org](https://nodejs.org/), or a version manager like [nvm](https://github.com/nvm-sh/nvm) / [fnm](https://github.com/Schniz/fnm) if you want multiple Node versions side-by-side.
+
+Verify:
+
+```bash
+node --version   # should print v22.x or higher
+npm --version
+```
+
 ### <a id="codex-cli-mac"></a>Codex CLI
 
 #### Install
 
 ```bash
-# Recommended
-brew install --cask codex
-
-# Or via npm (needs Node.js 22+)
 npm install -g @openai/codex
 ```
 
-Requires macOS 12+. The Homebrew cask auto-picks the right architecture (Apple Silicon or Intel).
-
-Verify:
+Requires macOS 12+. Verify:
 
 ```bash
 codex --version
+```
+
+To update later:
+
+```bash
+npm update -g @openai/codex
 ```
 
 #### Configure
@@ -239,28 +270,19 @@ model_reasoning_effort = "low"
 #### Install
 
 ```bash
-# Recommended: native installer
-curl -fsSL https://claude.ai/install.sh | bash
+npm install -g @anthropic-ai/claude-code
 ```
 
-Auto-updates in background, no Node.js required, universal binary (Apple Silicon + Intel).
-
-Alternatives:
-
-```bash
-# Homebrew, stable channel (lags by about a week)
-brew install --cask claude-code
-
-# Homebrew, rolling latest
-brew install --cask claude-code@latest
-```
-
-If you use Homebrew, you update manually with `brew upgrade claude-code`.
-
-Verify:
+Universal binary — works on Apple Silicon and Intel. Verify:
 
 ```bash
 claude --version
+```
+
+To update later:
+
+```bash
+npm update -g @anthropic-ai/claude-code
 ```
 
 #### Configure
