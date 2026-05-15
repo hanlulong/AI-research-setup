@@ -25,6 +25,7 @@ This is a living collection. Each section captures what I've found useful — in
 **Sub-pages:**
 
 - [GitHub setup and configuration](./github.md)
+- [Claude Code configuration](./claude-code.md) — statusline, permission modes (`auto`), extended thinking
 
 ---
 
@@ -205,6 +206,8 @@ claude mcp add context7 -- npx -y @upstash/context7-mcp
 
 A few first-10-minutes commands: `/help`, `/config`, `/resume`, `/compact`, `/memory`, `/skills`.
 
+**More:** [Claude Code configuration](./claude-code.md) — statusline, permission modes (`auto`), extended thinking.
+
 </details>
 
 ---
@@ -349,6 +352,8 @@ claude mcp add context7 -- npx -y @upstash/context7-mcp
 ```
 
 See the [Windows configure section](#claude-code-windows) for the rest — model choice notes, `CLAUDE.md` conventions, first-10-minutes slash commands.
+
+**More:** [Claude Code configuration](./claude-code.md) — statusline, permission modes (`auto`), extended thinking.
 
 </details>
 
