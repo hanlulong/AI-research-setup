@@ -111,7 +111,7 @@ Default bindings per [Microsoft Docs](https://learn.microsoft.com/en-us/windows/
 6. **Commit at end of day.** Small commits, descriptive messages. Ask the AI to draft the message — it's usually good at this.
 
 > [!TIP]
-> **Tell the AI to double-check itself.** For complex work — derivations, long analyses, paper sections, code — append something like *"double-check your work for accuracy and completeness"* or *"verify each step before finalizing"* to your prompt. Costs a bit of extra thinking; meaningfully improves accuracy.
+> **Ask the AI to double-check after it finishes.** When the AI completes a complex task — derivation, analysis, paper section, code change — send a brief follow-up: *"Double-check everything is correct. Zero errors. Improve. Make everything professional."* The AI re-examines its own output and catches mistakes, polishes weak spots, and raises the quality bar. No need to paste anything back — it has the previous turn in context. One of the cheapest accuracy boosts in the toolkit.
 
 ## Subagents (within one session)
 

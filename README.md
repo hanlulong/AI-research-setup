@@ -95,7 +95,8 @@ What that actually opts you into:
 
 **3. Resume yesterday's session** — `claude -c` or `codex resume --last` so context carries over.
 
-**4. Tell the AI to double-check itself.** Append *"double-check your work for accuracy"* to complex requests (derivations, analyses, paper sections). Costs a bit of extra thinking; meaningfully improves accuracy.
+> [!TIP]
+> **Ask the AI to double-check after it finishes.** When the AI completes any complex task, send a brief follow-up: *"Double-check everything is correct. Zero errors. Improve. Make everything professional."* It re-examines its own work — catches mistakes, polishes weak spots — without you pasting anything back. One of the cheapest accuracy boosts available.
 
 → **Details:** [docs/workflow.md](docs/workflow.md) — pane shortcuts, parallel agents, daily flow.
 
