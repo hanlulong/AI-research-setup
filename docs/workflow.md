@@ -111,7 +111,7 @@ Default bindings per [Microsoft Docs](https://learn.microsoft.com/en-us/windows/
 6. **Commit at end of day.** Small commits, descriptive messages. Ask the AI to draft the message — it's usually good at this.
 
 > [!TIP]
-> **Double-check complex work with the AI.** For anything important — a paper draft, a key derivation, a long analysis script — paste it back to the AI and ask: *"Read through this carefully and flag anything wrong, missing, or unclear."* The same model often catches its own mistakes on review. For the highest confidence on critical work, verify with a *different* model than the one that wrote it (Codex on Claude's output, or vice versa).
+> **Tell the AI to double-check itself.** For complex work — derivations, long analyses, paper sections, code — append something like *"double-check your work for accuracy and completeness"* or *"verify each step before finalizing"* to your prompt. Costs a bit of extra thinking; meaningfully improves accuracy.
 
 ## Subagents (within one session)
 

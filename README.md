@@ -95,7 +95,7 @@ What that actually opts you into:
 
 **3. Resume yesterday's session** — `claude -c` or `codex resume --last` so context carries over.
 
-**4. Double-check complex work with the AI.** Paste back the paper draft, derivation, or analysis script and ask: *"Read through this carefully and flag anything wrong, missing, or unclear."* For the highest confidence, verify with a *different* model than the one that wrote it. Costs a bit of context, catches a lot.
+**4. Tell the AI to double-check itself.** Append *"double-check your work for accuracy"* to complex requests (derivations, analyses, paper sections). Costs a bit of extra thinking; meaningfully improves accuracy.
 
 → **Details:** [docs/workflow.md](docs/workflow.md) — pane shortcuts, parallel agents, daily flow.
 
