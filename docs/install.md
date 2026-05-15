@@ -99,6 +99,6 @@ For API-key billing instead of subscription auth, set `OPENAI_API_KEY` or `ANTHR
 > ```
 
 > [!NOTE]
-> **`gpt-5.5` not available in Codex CLI.** Run `codex --list-models` to see what your account can select. Default models rotate; use the most capable one your plan supports.
+> **Picking a Codex model.** `gpt-5.5` is available on ChatGPT Plus and above; `gpt-5.5-pro` requires ChatGPT Pro / Business / Enterprise. Plan tier mainly affects usage caps, not model access. Defaults rotate — run `codex --list-models` to see what your account can actually select.
 
 → Next: [Step 2 — Configure](./configuration.md)

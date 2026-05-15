@@ -39,6 +39,9 @@ Both tools default to caution. For research work, opt into three things:
 > [!NOTE]
 > Model names rotate. Run `codex --list-models` and check `/model` inside Claude Code for what's currently available on your plan. As of May 2026, `gpt-5.5` is the Codex default; `claude-opus-4-7` is the strongest Claude.
 
+> [!NOTE]
+> **Opus 4.7 uses adaptive thinking** (automatic, model-internal) rather than explicit extended-thinking modes. `alwaysThinkingEnabled` and `effortLevel` mainly affect Sonnet 4.6 and Haiku 4.5 sessions; on Opus 4.7 they're harmless but have less direct effect. Use `claude-sonnet-4-6` + `effortLevel: "xhigh"` if you want explicit thinking control.
+
 ---
 
 ## Claude Code
@@ -131,6 +134,9 @@ For research work, start at `acceptEdits` user-wide. Opt into `auto` **per-proje
 ```json
 { "permissions": { "defaultMode": "auto" } }
 ```
+
+> [!IMPORTANT]
+> **`auto` mode is gated to Max, Team, Enterprise, or API plans** — it is **not available on Pro**. On Max specifically, only `claude-opus-4-7` works with auto mode. Also requires Claude Code v2.1.83+ and the Anthropic API provider (Bedrock / Vertex / Foundry not supported). Pro users: stop at `acceptEdits`.
 
 What `auto` still blocks: root/home removals (`rm -rf /`, `rm -rf ~`), pushes to untrusted external domains, obvious data-exfiltration patterns. Trusted destinations go under `autoMode.environment`.
 

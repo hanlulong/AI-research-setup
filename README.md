@@ -60,8 +60,8 @@ Now that you have an AI, ask it to configure itself. Open Codex or Claude Code a
 
 What that actually opts you into:
 
-- **Latest model + max thinking effort.** Bigger model, deeper reasoning (Codex: `gpt-5.5` + `xhigh`; Claude Code: `claude-opus-4-7` + `xhigh`, `alwaysThinkingEnabled`).
-- **Skip routine prompts.** `acceptEdits` (Claude Code) / `on-request` (Codex). Once you trust a repo, opt into `auto` per-project.
+- **Latest model + max thinking effort.** Codex: `gpt-5.5` + `xhigh`. Claude Code: `claude-opus-4-7` (uses adaptive thinking automatically) or `claude-sonnet-4-6` + `effortLevel: "xhigh"` for explicit control.
+- **Skip routine prompts.** `acceptEdits` (Claude Code) / `on-request` (Codex). Once you trust a repo, opt into `auto` per-project — Claude Code's `auto` mode requires a Max+ plan.
 - **One keyboard rule for Codex.** **Enter** sends now (or *injects* mid-turn). **Tab** *queues* for the next turn.
 
 → **Details:** [docs/configuration.md](docs/configuration.md) — full `settings.json` / `config.toml` reference, statusline scripts, permission modes deep-dive.
@@ -94,6 +94,8 @@ What that actually opts you into:
 **Snap four windows to quarters.** Windows: `Win+Left/Right` then `Win+Up/Down`. Mac: install [Rectangle](https://rectangleapp.com) for quarter-tiling shortcuts. Or keep all four in one terminal window with internal panes (Windows Terminal: `Alt+Shift+D`; iTerm2: `Cmd+D` / `Cmd+Shift+D`).
 
 **3. Resume yesterday's session** — `claude -c` or `codex resume --last` so context carries over.
+
+**4. Double-check complex work with the AI.** Paste back the paper draft, derivation, or analysis script and ask: *"Read through this carefully and flag anything wrong, missing, or unclear."* For the highest confidence, verify with a *different* model than the one that wrote it. Costs a bit of context, catches a lot.
 
 → **Details:** [docs/workflow.md](docs/workflow.md) — pane shortcuts, parallel agents, daily flow.
 

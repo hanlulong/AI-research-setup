@@ -110,6 +110,9 @@ Default bindings per [Microsoft Docs](https://learn.microsoft.com/en-us/windows/
 5. **Compact when context fills up.** In Claude Code, `/compact` condenses history while preserving direction.
 6. **Commit at end of day.** Small commits, descriptive messages. Ask the AI to draft the message — it's usually good at this.
 
+> [!TIP]
+> **Double-check complex work with the AI.** For anything important — a paper draft, a key derivation, a long analysis script — paste it back to the AI and ask: *"Read through this carefully and flag anything wrong, missing, or unclear."* The same model often catches its own mistakes on review. For the highest confidence on critical work, verify with a *different* model than the one that wrote it (Codex on Claude's output, or vice versa).
+
 ## Subagents (within one session)
 
 Distinct from the 4-pane setup above (where you run several AI sessions in parallel), each session can also internally spawn **subagents** to handle independent parts of a single task. Useful for:
