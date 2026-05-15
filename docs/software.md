@@ -4,6 +4,9 @@ Get the AI to drive your econ stack.
 
 [← Back to README](../README.md)
 
+> [!IMPORTANT]
+> **Easy path: ask the AI.** For each tool below, the recommended path is to paste the "Ask the AI" prompt into Codex or Claude Code. The AI reads the tool's README and runs the commands. Manual command paths are tucked into "Or manually" blocks for reference.
+
 ## Contents
 
 - [Python, MATLAB, R, Julia](#python-matlab-r-julia)
@@ -11,50 +14,56 @@ Get the AI to drive your econ stack.
 - [Academic writing](#academic-writing)
 - [Overleaf](#overleaf)
 - [Anything else](#anything-else)
-- [General install pattern](#general-install-pattern)
 
 ## Python, MATLAB, R, Julia
 
 **No extra setup.** Both Claude Code and Codex CLI can read and write source files for any language and run commands in your project folder. Just ask:
 
-> "Write a Python script that loads `data/main.dta`, runs the regressions in `code/main.do`, and outputs a LaTeX table to `tables/results.tex`."
+> *"Write a Python script that loads `data/main.dta`, runs the regressions in `code/main.do`, and outputs a LaTeX table to `tables/results.tex`."*
 
 The AI writes the code, asks permission to run it, and iterates on errors. For larger projects, give it a CLAUDE.md / AGENTS.md with your folder conventions (where data lives, where outputs go, naming, dependency manager).
 
 ## Stata
 
-Stata isn't natively callable from a CLI the way Python is, so it needs an MCP bridge.
+Stata isn't natively callable from a CLI the way Python is, so it needs an MCP bridge: [stata-mcp](https://github.com/hanlulong/stata-mcp), a VS Code / Cursor / Antigravity extension that exposes Stata over MCP.
 
-**Install [stata-mcp](https://github.com/hanlulong/stata-mcp)** — a VS Code / Cursor / Antigravity extension that exposes Stata over MCP:
+**Ask the AI:**
+
+> *"Install stata-mcp from https://github.com/hanlulong/stata-mcp and wire it up as an MCP server so you can run .do files."*
+
+The AI installs the extension, starts the MCP server, and runs the right `mcp add` command for whichever tool you're using.
+
+**Prerequisites:** Stata 17+ installed locally; VS Code / Cursor / Antigravity for the extension.
+
+<details>
+<summary><b>Or manually</b></summary>
+
+<br>
+
+Install the extension:
 
 ```bash
 code --install-extension DeepEcon.stata-mcp
-# or:
-cursor --install-extension DeepEcon.stata-mcp
-# or:
-antigravity --install-extension DeepEcon.stata-mcp
+# or: cursor --install-extension DeepEcon.stata-mcp
+# or: antigravity --install-extension DeepEcon.stata-mcp
 ```
 
-The extension runs an MCP server at `http://localhost:4000/mcp-streamable`. Wire it up:
-
-**Claude Code:**
+Wire to Claude Code:
 
 ```bash
 claude mcp add --transport http stata-mcp http://localhost:4000/mcp-streamable --scope user
 ```
 
-**Codex CLI** (0.46.0+):
+Or to Codex CLI (0.46.0+):
 
 ```bash
 codex mcp add stata-mcp --url http://localhost:4000/mcp-streamable
 ```
 
-**Prerequisites:** Stata 17+ installed locally; VS Code / Cursor / Antigravity for the extension; `uv` (auto-installed if missing).
-
-After this, your AI can run `.do` and `.ado` files, view data, and render Stata graphs in real time.
+</details>
 
 > [!NOTE]
-> Initial install takes ~2 minutes (dependency setup). Each parallel session uses 200–300 MB RAM; mind Stata's concurrent-instance license limits. In Cursor / Antigravity, the extension's toolbar buttons are hidden by default — enable via "Configure Icon Visibility."
+> Initial install takes ~2 minutes. Each parallel session uses 200–300 MB RAM; mind Stata's concurrent-instance license limits. In Cursor / Antigravity, the extension's toolbar buttons are hidden by default — enable via "Configure Icon Visibility."
 
 Full docs: https://github.com/hanlulong/stata-mcp
 
@@ -62,15 +71,11 @@ Full docs: https://github.com/hanlulong/stata-mcp
 
 [econ-writing-skill](https://github.com/hanlulong/econ-writing-skill) is a Claude Code / Codex skill synthesizing 50+ writing guides from Cochrane, McCloskey, Shapiro, Head, Bellemare, Goldin, Kremer, and others.
 
-**Install (one-liner):**
+**Ask the AI:**
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/hanlulong/econ-writing-skill/main/install.sh | bash
-```
+> *"Install the econ-writing-skill from https://github.com/hanlulong/econ-writing-skill."*
 
-Flags: `--local` (current project only), `--claude` / `--codex` (target a specific client).
-
-**Restart your AI session**, then invoke:
+Restart your AI session after install, then invoke:
 
 ```
 /econ-write write the introduction for my paper on minimum-wage incidence
@@ -81,6 +86,19 @@ Flags: `--local` (current project only), `--claude` / `--codex` (target a specif
 
 Works for drafts, audits, referee responses, JMPs, grant proposals, conference talks.
 
+<details>
+<summary><b>Or manually</b></summary>
+
+<br>
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/hanlulong/econ-writing-skill/main/install.sh | bash
+```
+
+Flags: `--local` (current project only), `--claude` / `--codex` (target a specific client).
+
+</details>
+
 ## Overleaf
 
 Two patterns, depending on your Overleaf plan.
@@ -89,7 +107,7 @@ Two patterns, depending on your Overleaf plan.
 
 Overleaf's Dropbox integration syncs your `<project>` folder to `~/Dropbox/Apps/Overleaf/<project>/`. Edit `.tex` files locally with AI; Overleaf pulls changes automatically.
 
-This is the cleanest setup if you have Overleaf Premium.
+This is the cleanest setup if you have Overleaf Premium. No install required.
 
 ### Pattern 2 — overleaf-sync-now (for the sync lag)
 
@@ -97,13 +115,18 @@ Dropbox-to-Overleaf sync runs every ~10–20 minutes. If you edit on Overleaf's 
 
 [overleaf-sync-now](https://github.com/hanlulong/overleaf-sync-now) is a CLI + Claude Code PreToolUse hook that pulls fresh Overleaf web edits before the AI reads/edits a `.tex` / `.bib` / `.cls` / `.sty` / `.bst` file.
 
-**Install via your AI (easiest):**
+**Ask the AI:**
 
-Open Claude Code or Codex and paste:
+> *"Install overleaf-sync-now from https://github.com/hanlulong/overleaf-sync-now using `uv tool install`, then run `overleaf-sync-now install`."*
 
-> Install overleaf-sync-now from https://github.com/hanlulong/overleaf-sync-now using `uv tool install`, then run `overleaf-sync-now install`.
+Restart your AI after install (`/exit` then relaunch). Verify with `overleaf-sync-now status`.
 
-**Manual install (Mac/Linux):**
+<details>
+<summary><b>Or manually</b></summary>
+
+<br>
+
+**Mac/Linux:**
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -112,7 +135,7 @@ uv tool install --from git+https://github.com/hanlulong/overleaf-sync-now overle
 overleaf-sync-now install
 ```
 
-**Manual install (Windows PowerShell):**
+**Windows PowerShell:**
 
 ```powershell
 irm https://astral.sh/uv/install.ps1 | iex
@@ -121,7 +144,7 @@ uv tool install --from git+https://github.com/hanlulong/overleaf-sync-now overle
 overleaf-sync-now install
 ```
 
-Restart your AI after install (`/exit` then `claude`). Verify with `overleaf-sync-now status`.
+</details>
 
 > [!NOTE]
 > On Windows with Chrome 130+, run `overleaf-sync-now login` once — Chrome's App-Bound Encryption blocks silent cookie extraction.
@@ -140,14 +163,10 @@ Restart your AI after install (`/exit` then `claude`). Verify with `overleaf-syn
 - **Document processing / OCR** — Docling, Marker, Mathpix, MinerU, OlmOCR
 - **NLP for economics**, **policy / labor / alternative data**, **finance**, **data collection**
 
-Browse the list and pick what's useful for your project.
+Browse the list, find a tool you want, and:
 
-## General install pattern
+> *"Install <tool name> from <repo URL>."*
 
-For any new tool you find online (in the directory above, or anywhere):
-
-> Open Claude Code or Codex CLI, paste the GitHub repo URL, and ask: **"install this."**
-
-The AI reads the README and runs the install commands. Faster than copy-pasting them yourself, handles platform variants automatically, and asks for permission before each system change.
+The AI reads the README and runs the commands.
 
 → Next: [Step 5 — Backup & cloud](./github.md)

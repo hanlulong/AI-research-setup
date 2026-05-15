@@ -4,6 +4,13 @@ Get both tools running with the strongest models, the right permission level, an
 
 [← Back to README](../README.md)
 
+> [!IMPORTANT]
+> **Easy path: ask the AI.** Once Codex or Claude Code is running, paste:
+>
+> > *"Configure yourself for research work: use the latest model, max thinking effort, acceptEdits permissions, and a sensible statusline. Show me the diff before applying."*
+>
+> Everything below is the reference for what gets changed and where, in case you want to edit by hand.
+
 ## Contents
 
 - [Day-1 settings](#day-1-settings)

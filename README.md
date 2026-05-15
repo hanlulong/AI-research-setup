@@ -7,6 +7,9 @@ Five steps, in order: install → configure → workflow → software → backup
 > [!TIP]
 > **Picking just one?** As of May 2026, GPT models tend to outperform Claude on day-to-day research coding. If your budget only fits one subscription, start with [ChatGPT](https://chatgpt.com/) Plus/Pro and Codex CLI. Claude Code is excellent and the two complement each other well when run together — but a one-tool budget points at OpenAI today. Re-check before committing; rankings flip every few months.
 
+> [!IMPORTANT]
+> **After Step 1, ask the AI.** Once `claude` or `codex` is running, paste your intent (e.g. *"install stata-mcp and wire it up"*) and let the AI handle the commands. Sub-pages still document the raw commands, but the recommended path is to use the AI as your installer and configurator.
+
 ## Contents
 
 1. [Install](#step-1--install)
@@ -21,7 +24,7 @@ Five steps, in order: install → configure → workflow → software → backup
 
 > **Goal:** `codex` and `claude` running in your terminal.
 
-Both install via npm, so install Node.js (LTS, v22+) first.
+This is the one step that requires running commands yourself — you can't ask the AI to install itself. Both tools install via npm, so install Node.js (LTS, v22+) first.
 
 **Windows** (PowerShell):
 
@@ -51,20 +54,17 @@ Verify with `codex --version` and `claude --version`. First-time launch of each 
 
 > **Goal:** Both tools running at maximum capability.
 
-Defaults are tuned for caution. Three opt-ins make them research-ready:
+Now that you have an AI, ask it to configure itself. Open Codex or Claude Code and paste:
 
-**1. Latest model + max thinking effort.** As of May 2026:
+> *"Configure yourself for research work: use the latest model, set thinking effort to xhigh, switch permissions to acceptEdits, and add a sensible statusline. Show me the diff before applying."*
 
-| | Codex CLI (`~/.codex/config.toml`) | Claude Code (`~/.claude/settings.json`) |
-|---|---|---|
-| Model | `model = "gpt-5.5"` | `"model": "claude-opus-4-7"` |
-| Thinking | `model_reasoning_effort = "xhigh"` | `"effortLevel": "xhigh"`, `"alwaysThinkingEnabled": true` |
+What that actually opts you into:
 
-**2. Skip routine prompts.** Set `permissions.defaultMode = "acceptEdits"` in Claude Code; set `approval_policy = "on-request"` in Codex. Once you trust a repo, opt into `auto` mode per-project.
+- **Latest model + max thinking effort.** Bigger model, deeper reasoning (Codex: `gpt-5.5` + `xhigh`; Claude Code: `claude-opus-4-7` + `xhigh`, `alwaysThinkingEnabled`).
+- **Skip routine prompts.** `acceptEdits` (Claude Code) / `on-request` (Codex). Once you trust a repo, opt into `auto` per-project.
+- **One keyboard rule for Codex.** **Enter** sends now (or *injects* mid-turn). **Tab** *queues* for the next turn.
 
-**3. One keyboard rule for Codex.** **Enter** sends immediately — and if Codex is mid-turn, *injects* your message into the running turn. **Tab** *queues* your message for the next turn. Use Tab to add context without interrupting.
-
-→ **Details:** [docs/configuration.md](docs/configuration.md) — full `settings.json` / `config.toml`, statusline, permission modes, more shortcuts.
+→ **Details:** [docs/configuration.md](docs/configuration.md) — full `settings.json` / `config.toml` reference, statusline scripts, permission modes deep-dive.
 
 **Next:** [Step 3 — Workflow](#step-3--typical-research-workflow)
 
@@ -76,7 +76,7 @@ Defaults are tuned for caution. Three opt-ins make them research-ready:
 
 **1. Open the terminal at your project folder.**
 
-- **Windows:** in File Explorer, navigate to the folder. Type `cmd` in the address bar and press Enter — opens CMD in that folder. (`powershell` and `wt` also work.)
+- **Windows:** in File Explorer, navigate to the folder. Type `cmd` (or `powershell`, or `wt`) in the address bar and press Enter.
 - **Mac:** in Finder, right-click the folder → Services → New Terminal at Folder. Or `cd` from an open terminal.
 
 **2. Run a 4-pane window** so you see editor, AI, output, and reference at once:
@@ -95,7 +95,7 @@ iTerm2 (Mac): `Cmd+D` / `Cmd+Shift+D` to split. Windows Terminal: `Alt+Shift+D`.
 
 **3. Resume yesterday's session** — `claude -c` or `codex --resume` so context carries over.
 
-→ **Details:** [docs/workflow.md](docs/workflow.md) — pane shortcuts, parallel agents, when to use plan vs auto, daily flow.
+→ **Details:** [docs/workflow.md](docs/workflow.md) — pane shortcuts, parallel agents, daily flow.
 
 **Next:** [Step 4 — Software](#step-4--work-with-research-software)
 
@@ -105,18 +105,17 @@ iTerm2 (Mac): `Cmd+D` / `Cmd+Shift+D` to split. Windows Terminal: `Alt+Shift+D`.
 
 > **Goal:** AI that can drive your econ stack.
 
-| Software | Setup |
+**General pattern:** paste a tool's GitHub URL into Claude Code or Codex and ask **"install this."** For research-specific tools:
+
+| Software | What to paste |
 |---|---|
-| **Python, MATLAB, R, Julia** | Native — just ask the AI. No extra setup. |
-| **Stata** | Install [stata-mcp](https://github.com/hanlulong/stata-mcp); wire it to your AI as an MCP server. |
-| **Academic writing** | Install [econ-writing-skill](https://github.com/hanlulong/econ-writing-skill) — `/econ-write` skill grounded in 50+ econ writing guides. |
-| **Overleaf** | Use Overleaf's Dropbox sync; edit `.tex` files locally. Install [overleaf-sync-now](https://github.com/hanlulong/overleaf-sync-now) if the sync lag bites. |
-| **Anything else** | [awesome-ai-for-economists](https://github.com/hanlulong/awesome-ai-for-economists) — curated directory of MCP servers, skills, models, and tools. |
+| **Python, MATLAB, R, Julia** | Native — no install needed. Just describe the task. |
+| **Stata** | *"Install stata-mcp from https://github.com/hanlulong/stata-mcp and wire it up as an MCP server so you can run .do files."* |
+| **Academic writing** | *"Install the econ-writing-skill from https://github.com/hanlulong/econ-writing-skill."* |
+| **Overleaf** | Use Overleaf's Dropbox sync. If the 10–20-minute sync lag bites: *"Install overleaf-sync-now from https://github.com/hanlulong/overleaf-sync-now."* |
+| **Anything else** | Browse [awesome-ai-for-economists](https://github.com/hanlulong/awesome-ai-for-economists), pick a URL, ask the AI to install. |
 
-> [!TIP]
-> **Install pattern for any new tool:** open Claude Code or Codex CLI, paste the GitHub repo URL, and ask "install this." The AI reads the README and runs the commands.
-
-→ **Details:** [docs/software.md](docs/software.md) — per-tool install commands, prereqs, MCP wiring.
+→ **Details:** [docs/software.md](docs/software.md) — what each tool does, prereqs, the raw install commands.
 
 **Next:** [Step 5 — Backup](#step-5--backup--cloud)
 
@@ -137,14 +136,11 @@ iTerm2 (Mac): `Cmd+D` / `Cmd+Shift+D` to split. Windows Terminal: `Alt+Shift+D`.
 
 > Use `~/Dropbox/Code/<project>/` for code. Copy final outputs (tables, figures, csv) to `~/Dropbox/Apps/Overleaf/<project>/` and edit the `.tex` directly there.
 
-**Create a GitHub repo for the project:**
+For a new project, paste this to the AI:
 
-```bash
-cd ~/Dropbox/Code/<project>
-gh repo create --source=. --remote=origin --push --private  # or --public
-```
+> *"Create a private GitHub repo for this project, set the remote, and push the initial commit."*
 
-→ **Details:** [docs/github.md](docs/github.md) — `git` + `gh` install/auth, what to back up, the full dual-cloud workflow.
+→ **Details:** [docs/github.md](docs/github.md) — `git` + `gh` install/auth (interactive, do this once), what to back up vs. not, the full dual-cloud workflow.
 
 ---
 
