@@ -19,9 +19,12 @@ This is a living collection. Each section captures what I've found useful — in
   - [Prerequisites](#mac-prereqs)
   - [Codex CLI](#codex-cli-mac)
   - [Claude Code](#claude-code-mac)
-- [GitHub](#github)
 - [Shared](#shared)
 - [License](#license)
+
+**Sub-pages:**
+
+- [GitHub setup and configuration](./github.md)
 
 ---
 
@@ -348,71 +351,6 @@ claude mcp add context7 -- npx -y @upstash/context7-mcp
 See the [Windows configure section](#claude-code-windows) for the rest — model choice notes, `CLAUDE.md` conventions, first-10-minutes slash commands.
 
 </details>
-
----
-
-## GitHub
-
-Both AI tools assume you have **git** and the **GitHub CLI** (`gh`) installed and authenticated. `gh auth login` is the easiest path — it handles HTTPS tokens *and* SSH keys in one interactive flow, and gives Claude Code / Codex CLI a working `gh` for PR and issue commands out of the box.
-
-<details>
-<summary><b>Windows install</b></summary>
-
-<br>
-
-```powershell
-winget install -e --id Git.Git
-winget install -e --id GitHub.cli
-```
-
-If you already installed [Git for Windows](https://git-scm.com/downloads/win) as the Claude Code companion above, the first command is a no-op.
-
-</details>
-
-<details>
-<summary><b>Mac install</b></summary>
-
-<br>
-
-```bash
-brew install git gh
-```
-
-</details>
-
-### Configure
-
-Set your identity, then authenticate. Run these in any terminal:
-
-```bash
-# Identity — used as your commit author
-git config --global user.name  "Your Name"
-git config --global user.email you@example.com
-
-# Sensible defaults
-git config --global init.defaultBranch main
-git config --global pull.rebase false
-git config --global push.autoSetupRemote true
-
-# Authenticate gh — walks you through HTTPS token + SSH key upload
-gh auth login
-```
-
-`gh auth login` asks:
-
-1. **GitHub.com or Enterprise** → GitHub.com
-2. **Preferred protocol** → SSH (recommended; it'll offer to generate and upload a key for you)
-3. **Upload SSH public key** → Yes
-4. **Authenticate** → Login with a web browser
-
-Verify:
-
-```bash
-gh auth status                # should show "Logged in to github.com as <you>"
-gh repo view <your-username>  # any public repo of yours
-```
-
-After this, `git clone git@github.com:...`, `gh repo create`, `gh pr create`, and AI-tool integrations all work without further setup.
 
 ---
 
