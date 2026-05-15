@@ -96,7 +96,7 @@ What that actually opts you into:
 **3. Resume yesterday's session** — `claude -c` or `codex resume --last` so context carries over.
 
 > [!TIP]
-> **Ask the AI to double-check after it finishes.** When the AI completes any complex task, send a brief follow-up: *"Double-check everything is correct. Zero errors. Improve. Make everything professional."* It re-examines its own work — catches mistakes, polishes weak spots — without you pasting anything back. One of the cheapest accuracy boosts available.
+> **Ask the AI to double-check after it finishes.** When the AI completes any complex task, send a brief follow-up: *"Double-check everything is correct. Zero errors. Improve. Make everything professional."* It re-examines its own work — catches mistakes, polishes weak spots. One of the cheapest accuracy boosts available.
 
 → **Details:** [docs/workflow.md](docs/workflow.md) — pane shortcuts, parallel agents, daily flow.
 
