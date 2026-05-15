@@ -23,6 +23,22 @@ Get the AI to drive your econ stack.
 
 The AI writes the code, asks permission to run it, and iterates on errors. For larger projects, give it a CLAUDE.md / AGENTS.md with your folder conventions (where data lives, where outputs go, naming, dependency manager).
 
+### Optional: polished MATLAB plots
+
+For publication-quality MATLAB figures, install [matlab-plot-skill](https://github.com/hanlulong/matlab-plot-skill) — a Claude Code / Codex skill that refactors messy `.m` plotting code, renders the figure, and iterates to a clean PDF.
+
+**Ask the AI:**
+
+> *"Install matlab-plot-skill from https://github.com/hanlulong/matlab-plot-skill."*
+
+Invoke it in your session with the `$matlab-plot-skill` prefix (note: dollar-sign, not slash):
+
+```
+Use $matlab-plot-skill to refactor Plots/generate_my_figure.m into a publication-quality PDF figure.
+```
+
+**Prerequisites:** MATLAB installed locally. Installer is `install.sh` (Mac/Linux) or `install.ps1` (Windows); validation uses `uv` and `pyyaml`.
+
 ## Stata
 
 Stata isn't natively callable from a CLI the way Python is, so it needs an MCP bridge: [stata-mcp](https://github.com/hanlulong/stata-mcp), a VS Code / Cursor / Antigravity extension that exposes Stata over MCP.

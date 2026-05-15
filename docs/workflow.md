@@ -9,7 +9,7 @@ A repeatable daily flow that uses the AI without breaking your stride.
 - [Open terminal at folder](#open-terminal-at-folder)
 - [4-pane window layout](#4-pane-window-layout)
 - [Daily flow](#daily-flow)
-- [Parallel agents](#parallel-agents)
+- [Subagents (within one session)](#subagents-within-one-session)
 
 ## Open terminal at folder
 
@@ -33,44 +33,54 @@ Several paths, pick whichever is fastest for you:
 
 ## 4-pane window layout
 
-A typical layout for AI-assisted research:
+Run a separate AI agent in each pane — each working on a different project, file, or task in parallel. While one agent compiles, another iterates on a draft; a third cleans data while a fourth drafts a referee response.
 
 ```
 ┌──────────────────┬──────────────────┐
-│  Editor          │  Browser /       │
-│  (VS Code,       │  Notes /         │
-│   Cursor)        │  Reference docs  │
+│  AI agent 1      │  AI agent 2      │
+│  Project A       │  Project B       │
 ├──────────────────┼──────────────────┤
-│  Codex CLI       │  Claude Code     │
+│  AI agent 3      │  AI agent 4      │
+│  Project C       │  Task X          │
 └──────────────────┴──────────────────┘
 ```
 
-### iTerm2 (Mac) — pane shortcuts
-
-| Shortcut         | Action                          |
-|------------------|---------------------------------|
-| `Cmd+D`          | Split pane vertically (right)   |
-| `Cmd+Shift+D`    | Split pane horizontally (below) |
-| `Cmd+[` / `Cmd+]`| Move focus between panes        |
-| `Cmd+T`          | New tab                         |
-| `Cmd+W`          | Close current pane              |
+Each pane is an independent session — its own conversation history, its own working directory, its own model. Cost scales with usage; rate limits depend on your plan.
 
 ### Windows Terminal — pane shortcuts
 
-| Shortcut                 | Action                              |
-|--------------------------|-------------------------------------|
-| `Alt+Shift+D`            | Duplicate pane (auto-split)         |
-| `Alt+Shift+Plus`         | Split pane vertically               |
-| `Alt+Shift+Minus`        | Split pane horizontally             |
-| `Alt+` arrow             | Move focus between panes            |
-| `Ctrl+Shift+T`           | New tab                             |
-| `Ctrl+Shift+W`           | Close current pane                  |
+Default bindings per [Microsoft Docs](https://learn.microsoft.com/en-us/windows/terminal/customize-settings/actions):
 
-### Why two AI tools side-by-side
+| Shortcut             | Action                                                  |
+|----------------------|---------------------------------------------------------|
+| `Alt+Shift+D`        | Duplicate current pane (auto-chooses split direction)   |
+| `Alt+Shift+=`        | Split right (vertical divider, panes side-by-side)      |
+| `Alt+Shift+-`        | Split down (horizontal divider, panes stacked)          |
+| `Alt+Arrow`          | Move focus to adjacent pane                             |
+| `Alt+Shift+Arrow`    | Resize current pane                                     |
+| `Ctrl+Shift+T`       | New tab                                                 |
+| `Ctrl+Shift+W`       | Close current pane                                      |
 
-- **Compare same task in parallel.** Ask both about the same hard problem; whichever gives the better answer wins. Fastest signal on which model handles your specific kind of work.
-- **One for plan, one for execution.** Use Claude Code's plan mode for design and research; use Codex with `--permission-mode auto` for the actual edits.
-- **Context isolation.** One tool keeps the long-running task; the other handles small fast lookups without polluting the main context.
+### iTerm2 (Mac) — pane shortcuts
+
+| Shortcut          | Action                                                  |
+|-------------------|---------------------------------------------------------|
+| `Cmd+D`           | Split vertically (vertical divider, panes side-by-side) |
+| `Cmd+Shift+D`     | Split horizontally (horizontal divider, panes stacked)  |
+| `Cmd+]` / `Cmd+[` | Next / previous pane                                    |
+| `Cmd+Opt+Arrow`   | Move focus to adjacent pane                             |
+| `Cmd+T`           | New tab                                                 |
+| `Cmd+W`           | Close current pane                                      |
+
+> [!NOTE]
+> Both terminals name splits after the *divider*, not the panes. "Split vertically" gives you side-by-side panes (the divider between them is vertical).
+
+### Why four AI agents
+
+- **Parallel projects.** One agent per project, each with its own context and folder. Switch between them at human speed; never lose state.
+- **Plan + execute.** One in plan mode for design and research, another with `auto` permissions for execution. They coordinate via shared files (one writes `plan.md`, the other implements).
+- **Pipeline parallelism.** Step A waits on Step B's output? Run both and supervise; neither blocks the other.
+- **Model comparison.** Send the same hard problem to two different models (one Codex, one Claude) — pick whichever answers better.
 
 ## Daily flow
 
@@ -83,9 +93,9 @@ A typical layout for AI-assisted research:
 5. **Compact when context fills up.** In Claude Code, `/compact` condenses history while preserving direction.
 6. **Commit at end of day.** Small commits, descriptive messages. Ask the AI to draft the message — it's usually good at this.
 
-## Parallel agents
+## Subagents (within one session)
 
-Both tools can spawn subagents to work on independent parts of a task in parallel. Useful for:
+Distinct from the 4-pane setup above (where you run several AI sessions in parallel), each session can also internally spawn **subagents** to handle independent parts of a single task. Useful for:
 
 - Researching multiple datasets at once
 - Reviewing several files in parallel

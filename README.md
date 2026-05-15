@@ -79,19 +79,19 @@ What that actually opts you into:
 - **Windows:** in File Explorer, navigate to the folder. Type `cmd` (or `powershell`, or `wt`) in the address bar and press Enter.
 - **Mac:** in Finder, right-click the folder → Services → New Terminal at Folder. Or `cd` from an open terminal.
 
-**2. Run a 4-pane window** so you see editor, AI, output, and reference at once:
+**2. Run a 4-pane window with an AI agent in each pane** — each working on its own project or task in parallel:
 
 ```
 ┌──────────────────┬──────────────────┐
-│  Editor          │  Browser /       │
-│  (VS Code,       │  Notes /         │
-│   Cursor)        │  Reference docs  │
+│  AI agent 1      │  AI agent 2      │
+│  Project A       │  Project B       │
 ├──────────────────┼──────────────────┤
-│  Codex CLI       │  Claude Code     │
+│  AI agent 3      │  AI agent 4      │
+│  Project C       │  Task X          │
 └──────────────────┴──────────────────┘
 ```
 
-iTerm2 (Mac): `Cmd+D` / `Cmd+Shift+D` to split. Windows Terminal: `Alt+Shift+D`.
+Windows Terminal: `Alt+Shift+D` to duplicate-and-split. iTerm2 (Mac): `Cmd+D` (side-by-side) / `Cmd+Shift+D` (stacked).
 
 **3. Resume yesterday's session** — `claude -c` or `codex --resume` so context carries over.
 
