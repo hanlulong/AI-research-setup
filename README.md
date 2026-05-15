@@ -6,6 +6,9 @@ This is a living collection. Each section captures what I've found useful — in
 
 > These tools update fast. When in doubt, the linked official docs win.
 
+> [!TIP]
+> **Picking just one?** As of May 2026, GPT models tend to outperform Claude on the research-coding tasks I do day-to-day, so if your budget only fits one subscription, I'd start with a [ChatGPT](https://chatgpt.com/) Plus/Pro plan and Codex CLI. Claude Code is excellent too and the two complement each other well when you run both — but a one-tool budget points at OpenAI today. Model rankings flip every few months, so revisit this before you commit.
+
 ## Contents
 
 - [Windows](#windows)
@@ -42,14 +45,6 @@ node --version   # should print v22.x or higher
 npm --version
 ```
 
-One more component, recommended for Codex CLI on Windows:
-
-```powershell
-winget install -e --id Microsoft.VCRedist.2015+.x64
-```
-
-Without the VC++ runtime, `codex` can exit silently after install ([issue #20827](https://github.com/openai/codex/issues/20827)).
-
 <a id="codex-cli-windows"></a>
 <details>
 <summary><b>Codex CLI</b> — OpenAI's terminal coding agent (<a href="https://github.com/openai/codex">repo</a>)</summary>
@@ -73,6 +68,13 @@ To update later:
 ```powershell
 npm update -g @openai/codex
 ```
+
+> [!NOTE]
+> If `codex` exits silently right after install, you're likely missing the Visual C++ runtime ([issue #20827](https://github.com/openai/codex/issues/20827)). Fix:
+> ```powershell
+> winget install -e --id Microsoft.VCRedist.2015+.x64
+> ```
+> Most Windows 11 machines already have this from other software, so only run it if you hit the symptom.
 
 #### Configure
 
