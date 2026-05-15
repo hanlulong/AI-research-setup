@@ -1,0 +1,157 @@
+# Step 5 — Backup & cloud (detail)
+
+Two parts: (a) install and authenticate the GitHub CLI, then (b) the full dual-cloud backup pattern — Dropbox + GitHub for code, Dropbox + Overleaf for text.
+
+[← Back to README](../README.md)
+
+## Contents
+
+- [Install git and gh](#install-git-and-gh)
+- [Configure](#configure)
+- [Backup pattern](#backup-pattern)
+- [Create a project repo](#create-a-project-repo)
+- [What to back up](#what-to-back-up)
+- [Installing more tools](#installing-more-tools)
+
+## Install git and gh
+
+Both AI tools assume you have **git** and the **GitHub CLI** (`gh`) installed and authenticated. `gh auth login` is the easiest path — it handles HTTPS tokens *and* SSH keys in one interactive flow, and gives Claude Code / Codex CLI a working `gh` for PR and issue commands out of the box.
+
+<details>
+<summary><b>Windows</b></summary>
+
+<br>
+
+```powershell
+winget install -e --id Git.Git
+winget install -e --id GitHub.cli
+```
+
+If you already installed [Git for Windows](https://git-scm.com/downloads/win) as the Claude Code companion, the first command is a no-op.
+
+</details>
+
+<details>
+<summary><b>Mac</b></summary>
+
+<br>
+
+```bash
+brew install git gh
+```
+
+</details>
+
+Verify both are on your PATH:
+
+```bash
+git --version
+gh --version
+```
+
+## Configure
+
+Set your identity and a few global defaults, then authenticate:
+
+```bash
+# Identity — used as your commit author
+git config --global user.name  "Your Name"
+git config --global user.email you@example.com
+
+# Sensible defaults
+git config --global init.defaultBranch main
+git config --global pull.rebase false
+git config --global push.autoSetupRemote true
+
+# Authenticate gh — walks you through HTTPS token + SSH key upload
+gh auth login
+```
+
+`gh auth login` asks four things:
+
+1. **GitHub.com or GitHub Enterprise?** → GitHub.com
+2. **Preferred protocol for git operations?** → SSH (`gh` will offer to generate and upload a key for you)
+3. **Upload your SSH public key to your GitHub account?** → Yes
+4. **How would you like to authenticate?** → Login with a web browser
+
+Verify:
+
+```bash
+gh auth status                # should show "Logged in to github.com as <you>"
+ssh -T git@github.com         # should say "Hi <you>! You've successfully authenticated..."
+gh repo view <your-username>  # any public repo of yours
+```
+
+After this, `git clone git@github.com:...`, `gh repo create`, `gh pr create`, and AI-tool GitHub integrations all work without further setup.
+
+## Backup pattern
+
+**Recommended dual-cloud setup:**
+
+- **Code → Dropbox + GitHub.** Dropbox = live working folder (instant sync across machines, instant recovery). GitHub = versioned backup (history, branches, sharing, code review).
+- **Text → Dropbox + Overleaf.** Dropbox = local edit space for AI. Overleaf = canonical render and what coauthors see.
+
+```
+                ┌─────────────────┐
+                │   You + AI      │
+                │   (local edits) │
+                └────────┬────────┘
+                         │
+              ┌──────────┴──────────┐
+        ┌─────▼─────┐         ┌─────▼─────┐
+        │  Dropbox  │         │  Dropbox  │
+        │  /Code/   │         │  /Apps/   │
+        │           │         │  Overleaf │
+        └─────┬─────┘         └─────┬─────┘
+              │                     │
+        ┌─────▼─────┐         ┌─────▼─────┐
+        │  GitHub   │         │ Overleaf  │
+        │ versioned │         │ canonical │
+        └───────────┘         └───────────┘
+```
+
+**No Dropbox subscription?** OneDrive works as a drop-in substitute for the sync layer. Google Drive also works but is less robust with binary tools.
+
+**Tell your AI the folder convention.** Add this to your project's CLAUDE.md / AGENTS.md so the AI does the right thing automatically:
+
+> Use `~/Dropbox/Code/<project>/` for code work. Copy final outputs (tables, figures, csv) to `~/Dropbox/Apps/Overleaf/<project>/` and edit the `.tex` files directly there.
+
+## Create a project repo
+
+For each project:
+
+```bash
+cd ~/Dropbox/Code/<project>
+gh repo create --source=. --remote=origin --push --private  # or --public
+```
+
+That single command initializes git (if needed), creates the GitHub repo, sets the remote, and pushes — all in one step.
+
+To make an existing project public/private later:
+
+```bash
+gh repo edit --visibility public   # or private
+```
+
+## What to back up
+
+| | Commit | Don't commit |
+|---|---|---|
+| **Code** | ✅ all source | — |
+| **Settings** | ✅ `CLAUDE.md`, `AGENTS.md`, project `.claude/settings.json` | ❌ `.claude/settings.local.json` (gitignored) |
+| **Notes / drafts** | ✅ | — |
+| **Reference data** | ✅ small (<10MB), tracked in repo | ❌ large data → Git LFS, S3, or external storage |
+| **Outputs** | ✅ if reproducible from code; ✅ figures/tables you reference in writing | ❌ huge intermediate artifacts |
+| **Secrets** | ❌ never | ✅ `.env`, API keys, credentials in `.gitignore` |
+
+Your `.gitignore` is your friend. Start with [github/gitignore](https://github.com/github/gitignore) templates for your language.
+
+## Installing more tools
+
+Both Codex CLI and Claude Code can install new tools for you. Open your AI, paste any GitHub URL — for example, anything from [awesome-ai-for-economists](https://github.com/hanlulong/awesome-ai-for-economists) — and ask:
+
+> "Install this."
+
+The AI reads the README and runs the commands. It asks permission before each system change, and handles platform variants automatically. Much faster than copy-pasting install steps yourself.
+
+[← Back to README](../README.md) — you're at the end of the guide. Time to actually do some research.

@@ -1,372 +1,150 @@
 # AI Research Setup
 
-Tips and notes for setting up AI tools and workflows for research work, on **Windows** and **macOS**.
+A step-by-step guide to setting up AI tools for research, on **Windows** and **macOS**.
 
-This is a living collection. Each section captures what I've found useful — installation steps, configuration, and gotchas — for the tools I actually use day-to-day.
-
-> These tools update fast. When in doubt, the linked official docs win.
+Five steps, in order: install → configure → workflow → software → backup. Each step keeps the essentials in this README and links to a sub-page in [docs/](docs/) for the full detail.
 
 > [!TIP]
-> **Picking just one?** As of May 2026, GPT models tend to outperform Claude on the research-coding tasks I do day-to-day, so if your budget only fits one subscription, I'd start with a [ChatGPT](https://chatgpt.com/) Plus/Pro plan and Codex CLI. Claude Code is excellent too and the two complement each other well when you run both — but a one-tool budget points at OpenAI today. Model rankings flip every few months, so revisit this before you commit.
+> **Picking just one?** As of May 2026, GPT models tend to outperform Claude on day-to-day research coding. If your budget only fits one subscription, start with [ChatGPT](https://chatgpt.com/) Plus/Pro and Codex CLI. Claude Code is excellent and the two complement each other well when run together — but a one-tool budget points at OpenAI today. Re-check before committing; rankings flip every few months.
 
 ## Contents
 
-- [Windows](#windows)
-  - [Prerequisites](#windows-prereqs)
-  - [Codex CLI](#codex-cli-windows)
-  - [Claude Code](#claude-code-windows)
-- [Mac](#mac)
-  - [Prerequisites](#mac-prereqs)
-  - [Codex CLI](#codex-cli-mac)
-  - [Claude Code](#claude-code-mac)
-- [Shared](#shared)
-- [License](#license)
-
-**Sub-pages:**
-
-- [GitHub setup and configuration](./github.md)
-- [Claude Code configuration](./claude-code.md) — statusline, permission modes (`auto`), extended thinking
+1. [Install](#step-1--install)
+2. [Configure & use effectively](#step-2--configure--use-effectively)
+3. [Typical research workflow](#step-3--typical-research-workflow)
+4. [Work with research software](#step-4--work-with-research-software)
+5. [Backup & cloud](#step-5--backup--cloud)
 
 ---
 
-## Windows
+## Step 1 — Install
 
-Tested on Windows 11. Most steps assume **Windows Terminal** with either PowerShell 7 or CMD. WSL2 is fine too.
+> **Goal:** `codex` and `claude` running in your terminal.
 
-### <a id="windows-prereqs"></a>Prerequisites
+Both install via npm, so install Node.js (LTS, v22+) first.
 
-Both tools are installed via npm, so you need **Node.js (LTS, v22+)**. The easiest path is winget:
+**Windows** (PowerShell):
 
 ```powershell
 winget install -e --id OpenJS.NodeJS.LTS
-```
-
-Alternatives: the official installer from [nodejs.org](https://nodejs.org/), or a version manager like [nvm-windows](https://github.com/coreybutler/nvm-windows) / [fnm](https://github.com/Schniz/fnm) if you want multiple Node versions side-by-side.
-
-Verify:
-
-```powershell
-node --version   # should print v22.x or higher
-npm --version
-```
-
-<a id="codex-cli-windows"></a>
-<details>
-<summary><b>Codex CLI</b> — OpenAI's terminal coding agent (<a href="https://github.com/openai/codex">repo</a>)</summary>
-
-<br>
-
-#### Install
-
-```powershell
 npm install -g @openai/codex
-```
-
-Verify:
-
-```powershell
-codex --version
-```
-
-To update later:
-
-```powershell
-npm update -g @openai/codex
-```
-
-> [!NOTE]
-> If `codex` exits silently right after install, you're likely missing the Visual C++ runtime ([issue #20827](https://github.com/openai/codex/issues/20827)). Fix:
-> ```powershell
-> winget install -e --id Microsoft.VCRedist.2015+.x64
-> ```
-> Most Windows 11 machines already have this from other software, so only run it if you hit the symptom.
-
-#### Configure
-
-First run:
-
-```powershell
-codex
-```
-
-The TUI launches and prompts you to **Sign in with ChatGPT** (browser OAuth). This is the default and uses your ChatGPT Plus/Pro/Business plan — no separate API billing. To use an API key instead, set `OPENAI_API_KEY` in your environment before running `codex`.
-
-Config lives at `%USERPROFILE%\.codex\config.toml`. A minimal researcher-friendly starter:
-
-```toml
-# %USERPROFILE%\.codex\config.toml
-
-approval_policy = "on-request"      # untrusted | on-request | never
-sandbox_mode    = "workspace-write" # read-only | workspace-write | danger-full-access
-
-# Pick a model — list available with: codex --list-models
-# model = "gpt-5.5"
-# model_reasoning_effort = "high"
-
-# Example MCP server: context7 pulls up-to-date library docs on demand
-[mcp_servers.context7]
-command = "npx"
-args    = ["-y", "@upstash/context7-mcp"]
-
-# A faster, read-only profile — switch with: codex --profile fast
-[profiles.fast]
-sandbox_mode = "read-only"
-model_reasoning_effort = "low"
-```
-
-Drop a project-level `AGENTS.md` at the repo root (`/init` inside the TUI scaffolds one) so Codex picks up project conventions automatically.
-
-Useful slash commands inside Codex: `/init`, `/resume`, `/model`, `/permissions`, `/plan`, `/diff`, `/mcp`, `/status`.
-
-</details>
-
-<a id="claude-code-windows"></a>
-<details>
-<summary><b>Claude Code</b> — Anthropic's terminal coding agent (<a href="https://docs.claude.com/en/docs/claude-code">docs</a>)</summary>
-
-<br>
-
-#### Install
-
-```powershell
 npm install -g @anthropic-ai/claude-code
 ```
 
-Recommended companion: [**Git for Windows**](https://git-scm.com/downloads/win) — Claude Code uses Git Bash as its shell when present, which gives you a Unix-like environment for shell commands. Without it, it falls back to PowerShell.
-
-Verify:
-
-```powershell
-claude --version
-```
-
-To update later:
-
-```powershell
-npm update -g @anthropic-ai/claude-code
-```
-
-**Windows gotchas:**
-
-- **Git Bash not auto-detected?** Point Claude Code at it explicitly in `~/.claude/settings.json`:
-  ```json
-  {
-    "env": {
-      "CLAUDE_CODE_GIT_BASH_PATH": "C:\\Program Files\\Git\\bin\\bash.exe"
-    }
-  }
-  ```
-
-#### Configure
-
-First run:
-
-```powershell
-claude
-```
-
-It opens a browser window for authentication against your Anthropic (Claude.ai) account — Pro, Max, Team, or Enterprise. No API key required for that path. If you'd rather use API billing, set `ANTHROPIC_API_KEY`.
-
-Config files (precedence: project-local > project > user):
-
-- `%USERPROFILE%\.claude\settings.json` — user-level, all projects
-- `<repo>\.claude\settings.json` — project-level, committed to git
-- `<repo>\.claude\settings.local.json` — project-local, gitignored
-- `%USERPROFILE%\.claude\CLAUDE.md` — your global instructions
-- `<repo>\CLAUDE.md` — project instructions, committed
-
-Minimal user `settings.json`:
-
-```json
-{
-  "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "model": "claude-sonnet-4-6",
-  "permissions": {
-    "allow": [
-      "Bash(git status)",
-      "Bash(git diff:*)",
-      "Bash(git log:*)",
-      "Bash(ls:*)"
-    ]
-  }
-}
-```
-
-What's worth setting on day one:
-
-- **`model`** — `claude-sonnet-4-6` is a balanced default; switch to `claude-opus-4-7` for hardest work or `claude-haiku-4-5` for fast/cheap.
-- **`permissions.allow`** — pre-allowlist read-only Bash commands you run constantly so you stop getting prompted. The `/fewer-permission-prompts` skill can scan your transcripts and propose a list.
-- **`CLAUDE.md`** — keep one at each repo root with build/test/lint commands and any project-specific conventions.
-
-Add an MCP server:
-
-```powershell
-claude mcp add context7 -- npx -y @upstash/context7-mcp
-```
-
-A few first-10-minutes commands: `/help`, `/config`, `/resume`, `/compact`, `/memory`, `/skills`.
-
-**More:** [Claude Code configuration](./claude-code.md) — statusline, permission modes (`auto`), extended thinking.
-
-</details>
-
----
-
-## Mac
-
-Tested on Apple Silicon (macOS 14+). Intel Macs work too unless noted.
-
-### <a id="mac-prereqs"></a>Prerequisites
-
-Both tools are installed via npm, so you need **Node.js (LTS, v22+)**. The easiest path is [Homebrew](https://brew.sh/):
+**macOS:**
 
 ```bash
 brew install node
-```
-
-Alternatives: the official installer from [nodejs.org](https://nodejs.org/), or a version manager like [nvm](https://github.com/nvm-sh/nvm) / [fnm](https://github.com/Schniz/fnm) if you want multiple Node versions side-by-side.
-
-Verify:
-
-```bash
-node --version   # should print v22.x or higher
-npm --version
-```
-
-<a id="codex-cli-mac"></a>
-<details>
-<summary><b>Codex CLI</b> — OpenAI's terminal coding agent</summary>
-
-<br>
-
-#### Install
-
-```bash
 npm install -g @openai/codex
-```
-
-Requires macOS 12+. Verify:
-
-```bash
-codex --version
-```
-
-To update later:
-
-```bash
-npm update -g @openai/codex
-```
-
-#### Configure
-
-First run:
-
-```bash
-codex
-```
-
-Authentication and config conventions match the [Windows section above](#codex-cli-windows) — same OAuth flow, same `config.toml` schema. The only difference is the path:
-
-- Config lives at `~/.codex/config.toml`.
-
-Minimal starter (same as Windows, with the unix path):
-
-```toml
-# ~/.codex/config.toml
-
-approval_policy = "on-request"
-sandbox_mode    = "workspace-write"
-
-[mcp_servers.context7]
-command = "npx"
-args    = ["-y", "@upstash/context7-mcp"]
-
-[profiles.fast]
-sandbox_mode = "read-only"
-model_reasoning_effort = "low"
-```
-
-</details>
-
-<a id="claude-code-mac"></a>
-<details>
-<summary><b>Claude Code</b> — Anthropic's terminal coding agent</summary>
-
-<br>
-
-#### Install
-
-```bash
 npm install -g @anthropic-ai/claude-code
 ```
 
-Universal binary — works on Apple Silicon and Intel. Verify:
+Verify with `codex --version` and `claude --version`. First-time launch of each (`codex` or `claude`) opens a browser to authenticate against your ChatGPT or Claude account.
 
-```bash
-claude --version
-```
+→ **Details:** [docs/install.md](docs/install.md) — alternative install paths, prerequisites, troubleshooting.
 
-To update later:
-
-```bash
-npm update -g @anthropic-ai/claude-code
-```
-
-#### Configure
-
-First run:
-
-```bash
-claude
-```
-
-Same browser-auth flow as Windows. Config file conventions are identical — only the paths change:
-
-- `~/.claude/settings.json` — user
-- `<repo>/.claude/settings.json` — project (committed)
-- `<repo>/.claude/settings.local.json` — project-local (gitignored)
-- `~/.claude/CLAUDE.md` — your global instructions
-- `<repo>/CLAUDE.md` — project instructions
-
-Minimal `~/.claude/settings.json`:
-
-```json
-{
-  "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "model": "claude-sonnet-4-6",
-  "permissions": {
-    "allow": [
-      "Bash(git status)",
-      "Bash(git diff:*)",
-      "Bash(git log:*)",
-      "Bash(ls:*)"
-    ]
-  }
-}
-```
-
-Add an MCP server:
-
-```bash
-claude mcp add context7 -- npx -y @upstash/context7-mcp
-```
-
-See the [Windows configure section](#claude-code-windows) for the rest — model choice notes, `CLAUDE.md` conventions, first-10-minutes slash commands.
-
-**More:** [Claude Code configuration](./claude-code.md) — statusline, permission modes (`auto`), extended thinking.
-
-</details>
+**Next:** [Step 2 — Configure](#step-2--configure--use-effectively)
 
 ---
 
-## Shared
+## Step 2 — Configure & use effectively
 
-*Cross-platform tips and workflows — to be filled in as the repo grows.*
+> **Goal:** Both tools running at maximum capability.
 
-- Editors with AI integration (Cursor, VS Code, JetBrains)
-- MCP servers worth running
-- Prompts and workflow patterns
-- Git, GitHub, and review workflows
+Defaults are tuned for caution. Three opt-ins make them research-ready:
+
+**1. Latest model + max thinking effort.** As of May 2026:
+
+| | Codex CLI (`~/.codex/config.toml`) | Claude Code (`~/.claude/settings.json`) |
+|---|---|---|
+| Model | `model = "gpt-5.5"` | `"model": "claude-opus-4-7"` |
+| Thinking | `model_reasoning_effort = "xhigh"` | `"effortLevel": "xhigh"`, `"alwaysThinkingEnabled": true` |
+
+**2. Skip routine prompts.** Set `permissions.defaultMode = "acceptEdits"` in Claude Code; set `approval_policy = "on-request"` in Codex. Once you trust a repo, opt into `auto` mode per-project.
+
+**3. One keyboard rule for Codex.** **Enter** sends immediately — and if Codex is mid-turn, *injects* your message into the running turn. **Tab** *queues* your message for the next turn. Use Tab to add context without interrupting.
+
+→ **Details:** [docs/configuration.md](docs/configuration.md) — full `settings.json` / `config.toml`, statusline, permission modes, more shortcuts.
+
+**Next:** [Step 3 — Workflow](#step-3--typical-research-workflow)
+
+---
+
+## Step 3 — Typical research workflow
+
+> **Goal:** A daily flow that doesn't fight you.
+
+**1. Open the terminal at your project folder.**
+
+- **Windows:** in File Explorer, navigate to the folder. Type `cmd` in the address bar and press Enter — opens CMD in that folder. (`powershell` and `wt` also work.)
+- **Mac:** in Finder, right-click the folder → Services → New Terminal at Folder. Or `cd` from an open terminal.
+
+**2. Run a 4-pane window** so you see editor, AI, output, and reference at once:
+
+```
+┌──────────────────┬──────────────────┐
+│  Editor          │  Browser /       │
+│  (VS Code,       │  Notes /         │
+│   Cursor)        │  Reference docs  │
+├──────────────────┼──────────────────┤
+│  Codex CLI       │  Claude Code     │
+└──────────────────┴──────────────────┘
+```
+
+iTerm2 (Mac): `Cmd+D` / `Cmd+Shift+D` to split. Windows Terminal: `Alt+Shift+D`.
+
+**3. Resume yesterday's session** — `claude -c` or `codex --resume` so context carries over.
+
+→ **Details:** [docs/workflow.md](docs/workflow.md) — pane shortcuts, parallel agents, when to use plan vs auto, daily flow.
+
+**Next:** [Step 4 — Software](#step-4--work-with-research-software)
+
+---
+
+## Step 4 — Work with research software
+
+> **Goal:** AI that can drive your econ stack.
+
+| Software | Setup |
+|---|---|
+| **Python, MATLAB, R, Julia** | Native — just ask the AI. No extra setup. |
+| **Stata** | Install [stata-mcp](https://github.com/hanlulong/stata-mcp); wire it to your AI as an MCP server. |
+| **Academic writing** | Install [econ-writing-skill](https://github.com/hanlulong/econ-writing-skill) — `/econ-write` skill grounded in 50+ econ writing guides. |
+| **Overleaf** | Use Overleaf's Dropbox sync; edit `.tex` files locally. Install [overleaf-sync-now](https://github.com/hanlulong/overleaf-sync-now) if the sync lag bites. |
+| **Anything else** | [awesome-ai-for-economists](https://github.com/hanlulong/awesome-ai-for-economists) — curated directory of MCP servers, skills, models, and tools. |
+
+> [!TIP]
+> **Install pattern for any new tool:** open Claude Code or Codex CLI, paste the GitHub repo URL, and ask "install this." The AI reads the README and runs the commands.
+
+→ **Details:** [docs/software.md](docs/software.md) — per-tool install commands, prereqs, MCP wiring.
+
+**Next:** [Step 5 — Backup](#step-5--backup--cloud)
+
+---
+
+## Step 5 — Backup & cloud
+
+> **Goal:** Never lose work. Code versioned, text canonical, both synced.
+
+**Recommended dual-cloud setup:**
+
+- **Code → Dropbox + GitHub.** Dropbox is your live working folder (auto-syncs across machines). GitHub is your versioned backup (history, branches, sharing). Push regularly.
+- **Text → Dropbox + Overleaf.** Edit `.tex` locally in `~/Dropbox/Apps/Overleaf/<project>/` with AI. Overleaf is the canonical render and what coauthors see.
+
+**No Dropbox subscription?** OneDrive works as a substitute for the sync layer.
+
+**Tell your AI the folder convention.** Add this to your project's CLAUDE.md / AGENTS.md:
+
+> Use `~/Dropbox/Code/<project>/` for code. Copy final outputs (tables, figures, csv) to `~/Dropbox/Apps/Overleaf/<project>/` and edit the `.tex` directly there.
+
+**Create a GitHub repo for the project:**
+
+```bash
+cd ~/Dropbox/Code/<project>
+gh repo create --source=. --remote=origin --push --private  # or --public
+```
+
+→ **Details:** [docs/github.md](docs/github.md) — `git` + `gh` install/auth, what to back up, the full dual-cloud workflow.
 
 ---
 
