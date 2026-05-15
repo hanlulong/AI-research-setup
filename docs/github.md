@@ -4,6 +4,9 @@ Two parts: (a) install and authenticate the GitHub CLI, then (b) the full dual-c
 
 [← Back to README](../README.md)
 
+> [!IMPORTANT]
+> **Most of this is AI-doable.** Once Codex or Claude is running, ask it to set your git identity, apply sensible defaults, and create/push repos. You only need to run the `git`/`gh` install and the interactive `gh auth login` (browser flow) yourself.
+
 ## Contents
 
 - [Install git and gh](#install-git-and-gh)
@@ -51,23 +54,34 @@ gh --version
 
 ## Configure
 
-Set your identity and a few global defaults, then authenticate:
+Two things: identity + defaults (AI can do these), then `gh auth login` (you must run yourself — browser flow).
+
+**Ask the AI:**
+
+> *"Set my git global identity to 'Your Name' <you@example.com> and apply sensible defaults: init.defaultBranch=main, pull.rebase=false, push.autoSetupRemote=true."*
+
+<details>
+<summary><b>Or manually</b></summary>
+
+<br>
 
 ```bash
-# Identity — used as your commit author
 git config --global user.name  "Your Name"
 git config --global user.email you@example.com
-
-# Sensible defaults
 git config --global init.defaultBranch main
 git config --global pull.rebase false
 git config --global push.autoSetupRemote true
+```
 
-# Authenticate gh — walks you through HTTPS token + SSH key upload
+</details>
+
+Then **authenticate** in your terminal (browser opens):
+
+```bash
 gh auth login
 ```
 
-`gh auth login` asks four things:
+It asks four things:
 
 1. **GitHub.com or GitHub Enterprise?** → GitHub.com
 2. **Preferred protocol for git operations?** → SSH (`gh` will offer to generate and upload a key for you)
@@ -118,20 +132,29 @@ After this, `git clone git@github.com:...`, `gh repo create`, `gh pr create`, an
 
 ## Create a project repo
 
-For each project:
+**Ask the AI from inside the project folder:**
+
+> *"Create a private GitHub repo for this folder, set the remote, and push the initial commit."*
+
+(Use "public" instead if the project should be open.) The AI runs `gh repo create`, scaffolds a `.gitignore` if you need one, and pushes.
+
+<details>
+<summary><b>Or manually</b></summary>
+
+<br>
 
 ```bash
 cd ~/Dropbox/Code/<project>
 gh repo create --source=. --remote=origin --push --private  # or --public
 ```
 
-That single command initializes git (if needed), creates the GitHub repo, sets the remote, and pushes — all in one step.
-
-To make an existing project public/private later:
+Toggle visibility later:
 
 ```bash
-gh repo edit --visibility public   # or private
+gh repo edit --visibility public  # or private
 ```
+
+</details>
 
 ## What to back up
 

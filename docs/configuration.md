@@ -78,9 +78,18 @@ Recommended **user-level** `~/.claude/settings.json`:
 
 ### Statusline
 
-Claude Code can render a custom status line at the bottom of the TUI. It runs an external command, feeds it JSON on stdin (model, cwd, cost, context-window usage, …), and prints whatever you write to stdout.
+Claude Code renders a custom status line at the bottom of the TUI — runs an external command, feeds it JSON on stdin (model, cwd, cost, context %, …), prints whatever you want.
 
-Configure via the `statusLine` key (already in the snippet above). A starter script (Mac/Linux; requires `jq`):
+Inside Claude Code, run **`/statusline`** to scaffold one interactively. Or ask:
+
+> *"Set up a statusline showing model, current directory, git branch, and session cost."*
+
+<details>
+<summary><b>Or write the script yourself</b></summary>
+
+<br>
+
+A starter (Mac/Linux; requires `jq`):
 
 ```bash
 #!/usr/bin/env bash
@@ -101,9 +110,9 @@ printf "[%s] %s%s  \$%.2f" \
 [ -n "$WEEK" ] && printf "  | week %.0f%%" "$WEEK"
 ```
 
-Don't forget `chmod +x ~/.claude/statusline.sh`. Inside Claude Code, the `/statusline` command can scaffold one interactively too.
+`chmod +x ~/.claude/statusline.sh`. On Windows, Claude Code uses Git Bash if installed; for PowerShell, write a `.ps1` and reference it as `powershell -NoProfile -File C:\path\to\statusline.ps1`.
 
-**Windows:** Claude Code uses Git Bash if installed, else PowerShell. The bash script above works under Git Bash; for PowerShell, write a `.ps1` and reference it as `powershell -NoProfile -File C:\path\to\statusline.ps1`.
+</details>
 
 ### Permission modes
 
@@ -195,23 +204,34 @@ Codex's equivalent of CLAUDE.md. Project conventions, read on every session. Sca
 
 ## Skills and MCP servers
 
-Both tools support **skills** (reusable instruction bundles invoked with `/<name>`) and **MCP servers** (external tool capabilities).
+Both tools support **skills** (reusable instruction bundles invoked with `/<name>` or `$<name>`) and **MCP servers** (external tool capabilities).
 
-**Install a skill:** drop into `~/.claude/skills/<name>/` or run the skill's installer (e.g. the [econ-writing-skill](https://github.com/hanlulong/econ-writing-skill) curl one-liner — see [docs/software.md](./software.md)).
+**To install either: paste the GitHub URL to your AI and ask "install this."** The AI reads the README and runs the right command for whichever tool you're using.
 
-**Install an MCP server:**
+[docs/software.md](./software.md) lists specific skills and MCP servers worth installing for research work.
 
-- Claude Code:
-  ```bash
-  claude mcp add <name> -- <command> [args...]
-  # or for HTTP-transport servers:
-  claude mcp add --transport http <name> <url> --scope user
-  ```
-- Codex CLI: add a `[mcp_servers.<name>]` block to `config.toml`, or:
-  ```bash
-  codex mcp add <name> --url <url>
-  ```
+<details>
+<summary><b>Or run the install commands yourself</b></summary>
 
-[docs/software.md](./software.md) covers specific MCP servers worth installing.
+<br>
+
+**Claude Code MCP:**
+
+```bash
+claude mcp add <name> -- <command> [args...]
+# HTTP transport:
+claude mcp add --transport http <name> <url> --scope user
+```
+
+**Codex CLI MCP:**
+
+```bash
+codex mcp add <name> --url <url>
+# or add a [mcp_servers.<name>] block in config.toml
+```
+
+**Skills:** drop into `~/.claude/skills/<name>/` (Claude Code) or `~/.codex/skills/<name>/` (Codex), or run the skill's own installer.
+
+</details>
 
 → Next: [Step 3 — Workflow](./workflow.md)
