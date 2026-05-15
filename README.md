@@ -50,9 +50,11 @@ winget install -e --id Microsoft.VCRedist.2015+.x64
 
 Without the VC++ runtime, `codex` can exit silently after install ([issue #20827](https://github.com/openai/codex/issues/20827)).
 
-### <a id="codex-cli-windows"></a>Codex CLI
+<a id="codex-cli-windows"></a>
+<details>
+<summary><b>Codex CLI</b> — OpenAI's terminal coding agent (<a href="https://github.com/openai/codex">repo</a>)</summary>
 
-[Codex CLI](https://github.com/openai/codex) is OpenAI's terminal coding agent.
+<br>
 
 #### Install
 
@@ -109,9 +111,13 @@ Drop a project-level `AGENTS.md` at the repo root (`/init` inside the TUI scaffo
 
 Useful slash commands inside Codex: `/init`, `/resume`, `/model`, `/permissions`, `/plan`, `/diff`, `/mcp`, `/status`.
 
-### <a id="claude-code-windows"></a>Claude Code
+</details>
 
-[Claude Code](https://docs.claude.com/en/docs/claude-code) is Anthropic's terminal coding agent.
+<a id="claude-code-windows"></a>
+<details>
+<summary><b>Claude Code</b> — Anthropic's terminal coding agent (<a href="https://docs.claude.com/en/docs/claude-code">docs</a>)</summary>
+
+<br>
 
 #### Install
 
@@ -193,6 +199,8 @@ claude mcp add context7 -- npx -y @upstash/context7-mcp
 
 A few first-10-minutes commands: `/help`, `/config`, `/resume`, `/compact`, `/memory`, `/skills`.
 
+</details>
+
 ---
 
 ## Mac
@@ -216,7 +224,11 @@ node --version   # should print v22.x or higher
 npm --version
 ```
 
-### <a id="codex-cli-mac"></a>Codex CLI
+<a id="codex-cli-mac"></a>
+<details>
+<summary><b>Codex CLI</b> — OpenAI's terminal coding agent</summary>
+
+<br>
 
 #### Install
 
@@ -265,7 +277,13 @@ sandbox_mode = "read-only"
 model_reasoning_effort = "low"
 ```
 
-### <a id="claude-code-mac"></a>Claude Code
+</details>
+
+<a id="claude-code-mac"></a>
+<details>
+<summary><b>Claude Code</b> — Anthropic's terminal coding agent</summary>
+
+<br>
 
 #### Install
 
@@ -325,6 +343,8 @@ claude mcp add context7 -- npx -y @upstash/context7-mcp
 ```
 
 See the [Windows configure section](#claude-code-windows) for the rest — model choice notes, `CLAUDE.md` conventions, first-10-minutes slash commands.
+
+</details>
 
 ---
 
