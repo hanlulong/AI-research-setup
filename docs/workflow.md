@@ -47,7 +47,24 @@ Run a separate AI agent in each pane — each working on a different project, fi
 
 Each pane is an independent session — its own conversation history, its own working directory, its own model. Cost scales with usage; rate limits depend on your plan.
 
-### Windows Terminal — pane shortcuts
+### Easy way: OS window snapping
+
+Open four separate terminal windows (each running `claude` or `codex` in a different project folder), then snap each to a quarter of the screen using your OS's built-in shortcuts. Simpler than learning terminal-specific pane keybindings, and each window is a fully independent process.
+
+**Windows 11:**
+
+| Shortcut                    | Action               |
+|-----------------------------|----------------------|
+| `Win+Left`                  | Snap to left half    |
+| `Win+Right`                 | Snap to right half   |
+| `Win+Left` then `Win+Up`    | Top-left quarter     |
+| `Win+Left` then `Win+Down`  | Bottom-left quarter  |
+| `Win+Right` then `Win+Up`   | Top-right quarter    |
+| `Win+Right` then `Win+Down` | Bottom-right quarter |
+
+**Mac:** macOS Sequoia (15+) has built-in half-screen tiling (`Fn+Ctrl+Left/Right/Up/Down`). For quarter-tiling, install [Rectangle](https://rectangleapp.com) — free, open-source, with sensible defaults out of the box.
+
+### Windows Terminal panes (alternative)
 
 Default bindings per [Microsoft Docs](https://learn.microsoft.com/en-us/windows/terminal/customize-settings/actions):
 
@@ -61,7 +78,7 @@ Default bindings per [Microsoft Docs](https://learn.microsoft.com/en-us/windows/
 | `Ctrl+Shift+T`       | New tab                                                 |
 | `Ctrl+Shift+W`       | Close current pane                                      |
 
-### iTerm2 (Mac) — pane shortcuts
+### iTerm2 panes (alternative)
 
 | Shortcut          | Action                                                  |
 |-------------------|---------------------------------------------------------|
@@ -87,7 +104,7 @@ Default bindings per [Microsoft Docs](https://learn.microsoft.com/en-us/windows/
 1. **Open project folder + 4-pane layout** (see above).
 2. **Resume yesterday's session:**
    - `claude -c` — resume most recent in this dir
-   - `codex --resume` — pick from prior sessions
+   - `codex resume --last` — resume most recent in cwd (or `codex resume` for an interactive picker)
 3. **State today's goal** in one sentence. The AI does better with a North Star.
 4. **Let it work.** Use Tab (Codex) to add context without interrupting the running turn. See [configuration.md](./configuration.md#keyboard-shortcuts) for the Tab vs Enter rule.
 5. **Compact when context fills up.** In Claude Code, `/compact` condenses history while preserving direction.

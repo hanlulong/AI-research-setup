@@ -91,9 +91,9 @@ What that actually opts you into:
 └──────────────────┴──────────────────┘
 ```
 
-Windows Terminal: `Alt+Shift+D` to duplicate-and-split. iTerm2 (Mac): `Cmd+D` (side-by-side) / `Cmd+Shift+D` (stacked).
+**Snap four windows to quarters.** Windows: `Win+Left/Right` then `Win+Up/Down`. Mac: install [Rectangle](https://rectangleapp.com) for quarter-tiling shortcuts. Or keep all four in one terminal window with internal panes (Windows Terminal: `Alt+Shift+D`; iTerm2: `Cmd+D` / `Cmd+Shift+D`).
 
-**3. Resume yesterday's session** — `claude -c` or `codex --resume` so context carries over.
+**3. Resume yesterday's session** — `claude -c` or `codex resume --last` so context carries over.
 
 → **Details:** [docs/workflow.md](docs/workflow.md) — pane shortcuts, parallel agents, daily flow.
 
