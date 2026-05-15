@@ -24,7 +24,7 @@ Five steps, in order: install → configure → workflow → software → backup
 
 > **Goal:** `codex` and `claude` running in your terminal.
 
-This is the one step that requires running commands yourself — you can't ask the AI to install itself. Both tools install via npm, so install Node.js (LTS, v22+) first.
+This step requires running commands yourself — the AI can't install itself yet. Both tools install via npm, so install Node.js (LTS, v22+) first.
 
 **Windows** (PowerShell):
 
@@ -42,7 +42,7 @@ npm install -g @openai/codex
 npm install -g @anthropic-ai/claude-code
 ```
 
-Verify with `codex --version` and `claude --version`. First-time launch of each (`codex` or `claude`) opens a browser to authenticate against your ChatGPT or Claude account.
+Verify with `codex --version` and `claude --version`. The first run of either tool opens a browser to authenticate against your ChatGPT or Claude account.
 
 → **Details:** [docs/install.md](docs/install.md) — alternative install paths, prerequisites, troubleshooting.
 
@@ -54,7 +54,7 @@ Verify with `codex --version` and `claude --version`. First-time launch of each 
 
 > **Goal:** Both tools running at maximum capability.
 
-Now that you have an AI, ask it to configure itself. Open Codex or Claude Code and paste:
+Ask Codex or Claude Code to configure itself:
 
 > *"Configure yourself for research work: use the latest model, set thinking effort to xhigh, switch permissions to acceptEdits, and add a sensible statusline. Show me the diff before applying."*
 
@@ -131,15 +131,15 @@ What that actually opts you into:
 **Recommended dual-cloud setup:**
 
 - **Code → Dropbox + GitHub.** Dropbox is your live working folder (auto-syncs across machines). GitHub is your versioned backup (history, branches, sharing). Push regularly.
-- **Text → Dropbox + Overleaf.** Edit `.tex` locally in `~/Dropbox/Apps/Overleaf/<project>/` with AI. Overleaf is the canonical render and what coauthors see.
+- **Text → Dropbox + Overleaf.** Edit `.tex` files locally in `~/Dropbox/Apps/Overleaf/<project>/`. Overleaf is the canonical render and what coauthors see.
 
 **No Dropbox subscription?** OneDrive works as a substitute for the sync layer.
 
 **Tell your AI the folder convention.** Add this to your project's CLAUDE.md / AGENTS.md:
 
-> Use `~/Dropbox/Code/<project>/` for code. Copy final outputs (tables, figures, csv) to `~/Dropbox/Apps/Overleaf/<project>/` and edit the `.tex` directly there.
+> Use `~/Dropbox/Code/<project>/` for code. Copy final outputs (tables, figures, CSV files) to `~/Dropbox/Apps/Overleaf/<project>/` and edit the `.tex` files directly there.
 
-For a new project, paste this to the AI:
+For a new project, ask the AI:
 
 > *"Create a private GitHub repo for this project, set the remote, and push the initial commit."*
 

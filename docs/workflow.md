@@ -96,7 +96,6 @@ Default bindings per [Microsoft Docs](https://learn.microsoft.com/en-us/windows/
 
 - **Parallel projects.** One agent per project, each with its own context and folder. Switch between them at human speed; never lose state.
 - **Plan + execute.** One in plan mode for design and research, another with `auto` permissions for execution. They coordinate via shared files (one writes `plan.md`, the other implements).
-- **Pipeline parallelism.** Step A waits on Step B's output? Run both and supervise; neither blocks the other.
 - **Model comparison.** Send the same hard problem to two different models (one Codex, one Claude) — pick whichever answers better.
 
 ## Daily flow
@@ -121,7 +120,7 @@ Distinct from the 4-pane setup above (where you run several AI sessions in paral
 - Reviewing several files in parallel
 - Running independent experiments
 
-In Claude Code, the orchestrator delegates via the `Agent` tool (and there are specialized subagent types like `Explore` for code search). In Codex, the equivalent is the `multi_agent` config and the `/agents` slash command.
+In Claude Code, the orchestrator delegates via the `Agent` tool — specialized subagent types like `Explore` handle parallel code search and review. Codex CLI has comparable parallel-agent features; check the current `codex` docs for the exact syntax.
 
 > [!TIP]
 > **Don't over-delegate.** Subagents help when work is genuinely parallel and independent. For sequential work, one focused agent beats three confused ones. The cost (in context and in your time managing them) only pays off when you can run 2+ tasks at the same time without dependencies between them.

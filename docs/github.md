@@ -124,11 +124,11 @@ After this, `git clone git@github.com:...`, `gh repo create`, `gh pr create`, an
         └───────────┘         └───────────┘
 ```
 
-**No Dropbox subscription?** OneDrive works as a drop-in substitute for the sync layer. Google Drive also works but is less robust with binary tools.
+**No Dropbox subscription?** OneDrive works as a drop-in substitute for the sync layer.
 
 **Tell your AI the folder convention.** Add this to your project's CLAUDE.md / AGENTS.md so the AI does the right thing automatically:
 
-> Use `~/Dropbox/Code/<project>/` for code work. Copy final outputs (tables, figures, csv) to `~/Dropbox/Apps/Overleaf/<project>/` and edit the `.tex` files directly there.
+> Use `~/Dropbox/Code/<project>/` for code work. Copy final outputs (tables, figures, CSV files) to `~/Dropbox/Apps/Overleaf/<project>/` and edit the `.tex` files directly there.
 
 ## Create a project repo
 
@@ -158,14 +158,20 @@ gh repo edit --visibility public  # or private
 
 ## What to back up
 
-| | Commit | Don't commit |
-|---|---|---|
-| **Code** | ✅ all source | — |
-| **Settings** | ✅ `CLAUDE.md`, `AGENTS.md`, project `.claude/settings.json` | ❌ `.claude/settings.local.json` (gitignored) |
-| **Notes / drafts** | ✅ | — |
-| **Reference data** | ✅ small (<10MB), tracked in repo | ❌ large data → Git LFS, S3, or external storage |
-| **Outputs** | ✅ if reproducible from code; ✅ figures/tables you reference in writing | ❌ huge intermediate artifacts |
-| **Secrets** | ❌ never | ✅ `.env`, API keys, credentials in `.gitignore` |
+**Commit:**
+
+- Source code
+- `CLAUDE.md` / `AGENTS.md` and project `.claude/settings.json`
+- Notes and drafts
+- Small reference data (under ~10 MB)
+- Figures, tables, and outputs you reference in writing
+
+**Don't commit:**
+
+- `.claude/settings.local.json` (already gitignored)
+- Large data — use Git LFS, S3, or external storage
+- Huge intermediate artifacts (regenerate from code as needed)
+- Secrets: `.env`, API keys, credentials — keep these in `.gitignore`
 
 Your `.gitignore` is your friend. Start with [github/gitignore](https://github.com/github/gitignore) templates for your language.
 

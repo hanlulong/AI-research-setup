@@ -41,7 +41,7 @@ Use $matlab-plot-skill to refactor Plots/generate_my_figure.m into a publication
 
 ## Stata
 
-Stata isn't natively callable from a CLI the way Python is, so it needs an MCP bridge: [stata-mcp](https://github.com/hanlulong/stata-mcp), a VS Code / Cursor / Antigravity extension that exposes Stata over MCP.
+Stata needs an MCP bridge for AI tools to drive it interactively. [stata-mcp](https://github.com/hanlulong/stata-mcp) is a VS Code / Cursor / Antigravity extension that exposes Stata over MCP.
 
 **Ask the AI:**
 

@@ -29,7 +29,7 @@ Get both tools running with the strongest models, the right permission level, an
 
 Both tools default to caution. For research work, opt into three things:
 
-| | Codex CLI | Claude Code |
+| Setting | Codex CLI | Claude Code |
 |---|---|---|
 | **File** | `~/.codex/config.toml` | `~/.claude/settings.json` |
 | **Latest model** | `model = "gpt-5.5"` | `"model": "claude-opus-4-7"` |
