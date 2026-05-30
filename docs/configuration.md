@@ -7,7 +7,7 @@ Get both tools running with the strongest models, the right permission level, an
 > [!IMPORTANT]
 > **Easy path: ask the AI.** Once Codex or Claude Code is running, paste:
 >
-> > *"Configure yourself for research work: use the latest model, max thinking effort, acceptEdits permissions, and a sensible statusline. Show me the diff before applying."*
+> > *"Configure yourself for research work: use the latest model (Opus 4.8), set thinking effort to xhigh, keep auto permission mode, and add a sensible statusline. Show me the diff before applying."*
 >
 > Everything below is the reference for what gets changed and where, in case you want to edit by hand.
 
@@ -18,6 +18,7 @@ Get both tools running with the strongest models, the right permission level, an
   - [settings.json](#settingsjson)
   - [Statusline](#statusline)
   - [Permission modes](#permission-modes)
+  - [Reasoning, ultracode & fast mode](#reasoning-ultracode--fast-mode)
   - [CLAUDE.md](#claudemd)
 - [Codex CLI](#codex-cli)
   - [config.toml](#configtoml)
@@ -27,20 +28,20 @@ Get both tools running with the strongest models, the right permission level, an
 
 ## Day-1 settings
 
-Both tools default to caution. For research work, opt into three things:
+Out of the box, Codex leans cautious; Claude Code now defaults to `auto` permission mode. For research work, set three things deliberately:
 
 | Setting | Codex CLI | Claude Code |
 |---|---|---|
 | **File** | `~/.codex/config.toml` | `~/.claude/settings.json` |
-| **Latest model** | `model = "gpt-5.5"` | `"model": "claude-opus-4-7"` |
-| **Max thinking** | `model_reasoning_effort = "xhigh"` | `"effortLevel": "xhigh"`, `"alwaysThinkingEnabled": true` |
-| **Skip routine prompts** | `approval_policy = "on-request"` (or `"never"` per-project) | `"permissions": { "defaultMode": "acceptEdits" }` |
+| **Latest model** | `model = "gpt-5.5"` | `"model": "claude-opus-4-8"` |
+| **Deep reasoning** | `model_reasoning_effort = "xhigh"` | `"effortLevel": "xhigh"` |
+| **Permission level** | `approval_policy = "on-request"` (or `"never"` per-project) | `auto` (the default) — or `"permissions": { "defaultMode": "acceptEdits" }` for a tighter leash |
 
 > [!NOTE]
-> Model names rotate. Run `codex --list-models` and check `/model` inside Claude Code for what's currently available on your plan. As of May 2026, `gpt-5.5` is the Codex default; `claude-opus-4-7` is the strongest Claude.
+> Model names rotate. Use the `/model` picker inside Codex or Claude Code to see what's available on your plan. As of May 2026, `gpt-5.5` is the Codex default; `claude-opus-4-8` is the strongest Claude.
 
 > [!NOTE]
-> **Opus 4.7 uses adaptive thinking** (automatic, model-internal) rather than explicit extended-thinking modes. `alwaysThinkingEnabled` and `effortLevel` mainly affect Sonnet 4.6 and Haiku 4.5 sessions; on Opus 4.7 they're harmless but have less direct effect. Use `claude-sonnet-4-6` + `effortLevel: "xhigh"` if you want explicit thinking control.
+> **Effort and thinking are separate knobs.** `effortLevel` sets reasoning depth — the ladder runs `low | medium | high | xhigh | max`. Opus 4.8 defaults to `high`; persist `"effortLevel": "xhigh"` for a deeper research default. Separately, `"alwaysThinkingEnabled": true` shows extended thinking by default. For model-specific limits, the deepest settings, and automatic multi-agent workflows, see [Reasoning, ultracode & fast mode](#reasoning-ultracode--fast-mode).
 
 ---
 
@@ -59,12 +60,12 @@ Recommended **user-level** `~/.claude/settings.json`:
 ```json
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "model": "claude-opus-4-7",
+  "model": "claude-opus-4-8",
+  "effortLevel": "xhigh",
   "alwaysThinkingEnabled": true,
   "showThinkingSummaries": true,
-  "effortLevel": "xhigh",
   "permissions": {
-    "defaultMode": "acceptEdits",
+    "defaultMode": "auto",
     "allow": [
       "Bash(git status)",
       "Bash(git diff:*)",
@@ -78,6 +79,9 @@ Recommended **user-level** `~/.claude/settings.json`:
   }
 }
 ```
+
+> [!TIP]
+> **Make ultracode your default.** `ultracode` isn't a persistable settings key — launch every session in it via a shell alias instead. It pairs `xhigh` effort with automatic multi-agent workflows on substantive tasks. See [Reasoning, ultracode & fast mode](#reasoning-ultracode--fast-mode).
 
 ### Statusline
 
@@ -119,28 +123,67 @@ printf "[%s] %s%s  \$%.2f" \
 
 ### Permission modes
 
-`permissions.defaultMode` controls how Claude Code asks before running tools.
+`permissions.defaultMode` controls how Claude Code handles tool calls.
 
 | Mode                | What it does                                                                                          |
-|---------------------|-------------------------------------------------------------------------------------------------------|
+|---------------------|------------------------------------------------------------------------------------------------------|
+| `auto` *(default)*  | Runs tool calls it assesses as lower-risk automatically (after a risk and prompt-injection check) and blocks the rest. |
 | `default`           | Prompts the first time each tool is used.                                                             |
-| `acceptEdits`       | Auto-accepts file edits and common filesystem commands within the working directory.                  |
+| `acceptEdits`       | Auto-accepts file edits and common filesystem commands within the working directory.                 |
 | `plan`              | Plan Mode: read-only — Claude inspects and reasons but does not edit.                                 |
-| `auto`              | Auto-approves tool calls with a background safety classifier blocking destructive / exfiltration ops. |
 | `bypassPermissions` | Skips all prompts. Use only in containers / VMs / scratch dirs.                                       |
 
-For research work, start at `acceptEdits` user-wide. Opt into `auto` **per-project** in `<repo>/.claude/settings.json` once you trust the repo's blast radius:
-
-```json
-{ "permissions": { "defaultMode": "auto" } }
-```
+**`auto` is now the default**, and it suits research: it keeps you moving while still pausing on anything risky. Requirements: model Opus 4.6 or later (or Sonnet 4.6), the Anthropic API provider (Bedrock / Vertex / Foundry not supported), and Claude Code v2.1.83+. Want a tighter leash on a project? Override to `acceptEdits` or `plan`.
 
 > [!IMPORTANT]
-> **`auto` mode is gated to Max, Team, Enterprise, or API plans** — it is **not available on Pro**. On Max specifically, only `claude-opus-4-7` works with auto mode. Also requires Claude Code v2.1.83+ and the Anthropic API provider (Bedrock / Vertex / Foundry not supported). Pro users: stop at `acceptEdits`.
+> **Set `auto` at the user level, not in a committed repo file.** `defaultMode: "auto"` is honored only from user (`~/.claude/settings.json`), CLI-flag, or org-policy settings. It is **ignored** in a repo's `<repo>/.claude/settings.json` or `.claude/settings.local.json` — those are repo-controllable, so a cloned repo can't silently grant itself auto. The reverse works fine: a committed `{ "permissions": { "defaultMode": "acceptEdits" } }` (or `"plan"`) *is* respected, so use it to tighten a shared project.
 
-What `auto` still blocks: root/home removals (`rm -rf /`, `rm -rf ~`), pushes to untrusted external domains, obvious data-exfiltration patterns. Trusted destinations go under `autoMode.environment`.
+How `auto` decides: it inspects each call for risky or hard-to-reverse actions (root/home removals like `rm -rf ~`, pushes to untrusted destinations, exfiltration-shaped commands) and for prompt injection, runs the lower-risk ones, and blocks the rest. Pre-declare trusted destinations and custom rules under `autoMode.{allow, soft_deny, hard_deny, environment}`.
 
-**Session override:** `claude --permission-mode auto` or `claude --permission-mode plan`.
+**Session override:** `claude --permission-mode auto` (or `plan` / `acceptEdits`).
+
+> [!IMPORTANT]
+> **Working with sensitive data?** A few habits matter once an AI can read your files and run code:
+> - **Prompts and file contents go to the model provider.** Don't paste live credentials or confidential/PII data; load API keys (FRED, Census, …) from environment variables rather than hard-coding them in scripts.
+> - **"Install this" and MCP servers run third-party code** with your filesystem access — install only from sources you trust.
+> - **For restricted data (IRB / DUA) or embargoed results,** stay in `auto` or `plan` and review actions; save `bypassPermissions` for a throwaway scratch dir.
+> - **Leave `auto` on:** its prompt-injection check is what guards against instructions hidden in web pages or PDFs the agent reads.
+
+### Reasoning, ultracode & fast mode
+
+**Effort ladder.** `effortLevel` sets how hard Claude thinks:
+
+| Level    | Use it for                                                     |
+|----------|----------------------------------------------------------------|
+| `low`    | Quick, mechanical edits.                                       |
+| `medium` | Balanced everyday work.                                        |
+| `high`   | Comprehensive work with thorough testing — Opus 4.8's default. |
+| `xhigh`  | Deeper reasoning, just below maximum. **Opus 4.8/4.7 only.**   |
+| `max`    | Maximum capability, deepest reasoning.                         |
+
+Persist `"effortLevel": "xhigh"` in `settings.json` as a durable research default. Bump a single session with `/effort max`, or reset to the model default with `/effort auto`. (`max` is session-only unless you also set `CLAUDE_CODE_EFFORT_LEVEL=max`; on Opus 4.6 and Sonnet 4.6, `xhigh` falls back to `high`.)
+
+**Ultracode — maximum thoroughness.** `/effort ultracode` pairs `xhigh` effort with *standing dynamic-workflow orchestration*: Claude automatically spins up multi-agent workflows for substantive tasks, optimizing for the most exhaustive, correct answer rather than the fastest or cheapest. Ideal for a tricky derivation, a careful refactor, or a thorough audit.
+
+- **Enable for a session:** `/effort ultracode`. Exit with `/effort xhigh` (or `auto`).
+- **Make it your default:** launch via a shell alias so every session starts in ultracode:
+  ```bash
+  alias claude="claude --settings '{\"ultracode\": true}'"
+  ```
+- **Prerequisites:** an xhigh-capable model (Opus 4.8 or 4.7) and Dynamic Workflows enabled. Workflows default **on** for Max / Team / Enterprise and **off** for Pro — Pro users flip them on in `/config` first.
+- **Caveats:** ultracode is session-scoped (not a persistable `settings.json` key) and doesn't apply to remote sessions. It costs more tokens and runs longer — that's the trade for thoroughness.
+
+> [!TIP]
+> Typing the literal word **"workflow"** (or "workflows") in a prompt also opts that single prompt into the multi-agent Workflow tool, without changing your effort level.
+
+**Fast mode — the opposite trade-off.** `/fast` (or `"fastMode": true`) runs Claude Opus with ~2.5× faster output — **not** a downgrade to a smaller model — at a higher per-token cost (requires extra usage enabled). Available on Opus 4.8/4.7/4.6; not in the VS Code extension. Use it for quick, interactive iteration; switch back to `xhigh` or ultracode for hard problems.
+
+**Picking a gear.** Reach for **ultracode** on complex or large coding projects — a multi-file refactor, a full replication package or audit, a structural estimation, a subtle derivation — where getting it exhaustively right outweighs speed or token cost. Drop to **`/fast`** or a lower effort level for quick, interactive iteration. Most everyday work sits on the `high`/`xhigh` middle.
+
+> [!NOTE]
+> **Mind your usage.** Ultracode, fast mode, and several parallel panes all multiply token consumption, and subscription plans enforce rolling usage caps. Watch the statusline's `week %` and reach for the cheaper levers as you near a cap — fewer panes, `/fast`, or a lower effort level — reserving ultracode for the runs that genuinely need it.
+
+**Reviewing code.** Run `/code-review` (effort `low` → `max`) on your changes; `/code-review ultra` launches a deep multi-agent **cloud** review of the current branch or a PR number (user-triggered, billed).
 
 ### CLAUDE.md
 
@@ -166,7 +209,7 @@ Recommended **user-level** `~/.codex/config.toml`:
 
 ```toml
 model = "gpt-5.5"
-model_reasoning_effort = "xhigh"   # none | minimal | low | medium | high | xhigh
+model_reasoning_effort = "xhigh"   # low | medium | high | xhigh (xhigh = deepest; see Codex docs for the full set)
 approval_policy        = "on-request"   # untrusted | on-request | never
 sandbox_mode           = "workspace-write"  # read-only | workspace-write | danger-full-access
 
@@ -180,6 +223,8 @@ args    = ["-y", "@upstash/context7-mcp"]
 model_reasoning_effort = "low"
 sandbox_mode           = "read-only"
 ```
+
+The same depth-vs-speed trade-off applies here: keep `model_reasoning_effort = "xhigh"` for large or correctness-critical work, and switch to the read-only `fast` profile (`codex --profile fast`) for quick, interactive iteration.
 
 ### Keyboard shortcuts
 

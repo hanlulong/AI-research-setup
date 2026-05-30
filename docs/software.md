@@ -21,7 +21,7 @@ Get the AI to drive your econ stack.
 
 > *"Write a Python script that loads `data/main.dta`, runs the regressions in `code/main.do`, and outputs a LaTeX table to `tables/results.tex`."*
 
-The AI writes the code, asks permission to run it, and iterates on errors. For larger projects, give it a CLAUDE.md / AGENTS.md with your folder conventions (where data lives, where outputs go, naming, dependency manager).
+The AI writes the code, runs it (pausing to confirm anything risky), and iterates on errors. For larger projects, give it a CLAUDE.md / AGENTS.md with your folder conventions (where data lives, where outputs go, naming, dependency manager).
 
 ### Optional: polished MATLAB plots
 
@@ -64,13 +64,15 @@ code --install-extension DeepEcon.stata-mcp
 # or: antigravity --install-extension DeepEcon.stata-mcp
 ```
 
+Then open your IDE (VS Code / Cursor / Antigravity) so the extension activates and starts its MCP server on port 4000 — the `mcp add` commands below point at it.
+
 Wire to Claude Code:
 
 ```bash
 claude mcp add --transport http stata-mcp http://localhost:4000/mcp-streamable --scope user
 ```
 
-Or to Codex CLI (0.46.0+):
+Or to Codex CLI (requires 0.46.0 or newer for `codex mcp add`):
 
 ```bash
 codex mcp add stata-mcp --url http://localhost:4000/mcp-streamable

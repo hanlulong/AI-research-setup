@@ -55,7 +55,7 @@ npm --version
 npm install -g @openai/codex
 ```
 
-Verify: `codex --version`. Update later: `npm update -g @openai/codex`.
+Verify: `codex --version` (expect 0.46.0 or newer — needed for the `codex mcp add` step later). Update later: `npm update -g @openai/codex`.
 
 ## Claude Code
 
@@ -63,7 +63,7 @@ Verify: `codex --version`. Update later: `npm update -g @openai/codex`.
 npm install -g @anthropic-ai/claude-code
 ```
 
-Verify: `claude --version`. Update later: `npm update -g @anthropic-ai/claude-code`.
+Verify: `claude --version` (expect 2.1.83 or newer — `auto` permission mode needs it). Update later: `npm update -g @anthropic-ai/claude-code`.
 
 **Windows companion: Git for Windows.** Install [Git for Windows](https://git-scm.com/downloads/win) so Claude Code can use Git Bash as its shell (better than PowerShell for shell-style commands). Without it, Claude Code falls back to PowerShell.
 
@@ -99,6 +99,6 @@ For API-key billing instead of subscription auth, set `OPENAI_API_KEY` or `ANTHR
 > ```
 
 > [!NOTE]
-> **Picking a Codex model.** `gpt-5.5` is available on ChatGPT Plus and above; `gpt-5.5-pro` requires ChatGPT Pro / Business / Enterprise. Plan tier mainly affects usage caps, not model access. Defaults rotate — run `codex --list-models` to see what your account can actually select.
+> **Picking a Codex model.** `gpt-5.5` is the default; `gpt-5.5-pro` requires ChatGPT Pro / Business / Enterprise. Plan tier mainly affects usage caps. Defaults rotate — open the `/model` picker inside Codex to see what your account can actually select.
 
 → Next: [Step 2 — Configure](./configuration.md)

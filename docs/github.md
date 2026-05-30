@@ -5,7 +5,7 @@ Two parts: (a) install and authenticate the GitHub CLI, then (b) the full dual-c
 [← Back to README](../README.md)
 
 > [!IMPORTANT]
-> **Most of this is AI-doable.** Once Codex or Claude is running, ask it to set your git identity, apply sensible defaults, and create/push repos. You only need to run the `git`/`gh` install and the interactive `gh auth login` (browser flow) yourself.
+> **Most of this is AI-doable.** Once Codex or Claude is running, ask it to set your git identity, apply sensible defaults, and create/push repos — Claude Code's default `auto` mode runs lower-risk commands like these for you and pauses on anything risky. You only need to run the `git`/`gh` install and the interactive `gh auth login` (browser flow) yourself.
 
 ## Contents
 
@@ -128,13 +128,13 @@ After this, `git clone git@github.com:...`, `gh repo create`, `gh pr create`, an
 
 **Tell your AI the folder convention.** Add this to your project's CLAUDE.md / AGENTS.md so the AI does the right thing automatically:
 
-> Use `~/Dropbox/Code/<project>/` for code work. Copy final outputs (tables, figures, CSV files) to `~/Dropbox/Apps/Overleaf/<project>/` and edit the `.tex` files directly there.
+> Use `~/Dropbox/Code/<project>/` for code. Copy final outputs (tables, figures, CSV files) to `~/Dropbox/Apps/Overleaf/<project>/` and edit the `.tex` files directly there.
 
 ## Create a project repo
 
 **Ask the AI from inside the project folder:**
 
-> *"Create a private GitHub repo for this folder, set the remote, and push the initial commit."*
+> *"Create a private GitHub repo for this project, set the remote, and push the initial commit."*
 
 (Use "public" instead if the project should be open.) The AI runs `gh repo create`, scaffolds a `.gitignore` if you need one, and pushes.
 
@@ -155,6 +155,9 @@ gh repo edit --visibility public  # or private
 ```
 
 </details>
+
+> [!TIP]
+> **Review before you push.** In Claude Code, run `/code-review` to scan your changes for bugs and cleanups before committing. `/code-review ultra` launches a deep multi-agent cloud review of the current branch (or a PR number) — user-triggered and billed.
 
 ## What to back up
 
@@ -177,10 +180,6 @@ Your `.gitignore` is your friend. Start with [github/gitignore](https://github.c
 
 ## Installing more tools
 
-Both Codex CLI and Claude Code can install new tools for you. Open your AI, paste any GitHub URL — for example, anything from [awesome-ai-for-economists](https://github.com/hanlulong/awesome-ai-for-economists) — and ask:
-
-> "Install this."
-
-The AI reads the README and runs the commands. It asks permission before each system change, and handles platform variants automatically. Much faster than copy-pasting install steps yourself.
+Beyond `git` and `gh`, the AI installs any tool the same way — paste a repo URL (anything from [awesome-ai-for-economists](https://github.com/hanlulong/awesome-ai-for-economists) works) and ask *"install this."* See [Step 4 — Work with research software](./software.md) for the full pattern.
 
 [← Back to README](../README.md) — you're at the end of the guide. Time to actually do some research.

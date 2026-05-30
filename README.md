@@ -5,7 +5,7 @@ A step-by-step guide to setting up AI tools for research, on **Windows** and **m
 Five steps, in order: install → configure → workflow → software → backup. Each step keeps the essentials in this README and links to a sub-page in [docs/](docs/) for the full detail.
 
 > [!TIP]
-> **Picking just one?** As of May 2026, GPT models tend to outperform Claude on day-to-day research coding. If your budget only fits one subscription, start with [ChatGPT](https://chatgpt.com/) Plus/Pro and Codex CLI. Claude Code is excellent and the two complement each other well when run together — but a one-tool budget points at OpenAI today. Re-check before committing; rankings flip every few months.
+> **Picking just one?** As of May 2026, GPT models still edge out Claude on day-to-day research coding — though Opus 4.8's release narrows the gap considerably. If your budget only fits one subscription, start with [ChatGPT](https://chatgpt.com/) Plus/Pro and Codex CLI. Claude Code is excellent and the two complement each other well when run together — but a one-tool budget still points at OpenAI today. Re-check before committing; rankings flip every few months, and Opus 4.8 is worth a fresh look.
 
 > [!IMPORTANT]
 > **After Step 1, ask the AI.** Once `claude` or `codex` is running, paste your intent (e.g. *"install stata-mcp and wire it up"*) and let the AI handle the commands. Sub-pages still document the raw commands, but the recommended path is to use the AI as your installer and configurator.
@@ -42,7 +42,7 @@ npm install -g @openai/codex
 npm install -g @anthropic-ai/claude-code
 ```
 
-Verify with `codex --version` and `claude --version`. The first run of either tool opens a browser to authenticate against your ChatGPT or Claude account.
+Verify with `codex --version` and `claude --version`. The first run of either tool opens a browser to authenticate against your ChatGPT or Claude account. If a command isn't found or Codex exits with no output, see [troubleshooting](docs/install.md#troubleshooting) (on some bare Windows installs Codex needs the Visual C++ runtime).
 
 → **Details:** [docs/install.md](docs/install.md) — alternative install paths, prerequisites, troubleshooting.
 
@@ -56,12 +56,13 @@ Verify with `codex --version` and `claude --version`. The first run of either to
 
 Ask Codex or Claude Code to configure itself:
 
-> *"Configure yourself for research work: use the latest model, set thinking effort to xhigh, switch permissions to acceptEdits, and add a sensible statusline. Show me the diff before applying."*
+> *"Configure yourself for research work: use the latest model (Opus 4.8), set thinking effort to xhigh, keep auto permission mode, and add a sensible statusline. Show me the diff before applying."*
 
 What that actually opts you into:
 
-- **Latest model + max thinking effort.** Codex: `gpt-5.5` + `xhigh`. Claude Code: `claude-opus-4-7` (uses adaptive thinking automatically) or `claude-sonnet-4-6` + `effortLevel: "xhigh"` for explicit control.
-- **Skip routine prompts.** `acceptEdits` (Claude Code) / `on-request` (Codex). Once you trust a repo, opt into `auto` per-project — Claude Code's `auto` mode requires a Max+ plan.
+- **Latest model + deep reasoning.** Codex: `gpt-5.5` + `xhigh`. Claude Code: `claude-opus-4-8` (alias `opus`) + `effortLevel: "xhigh"`. Effort runs `low | medium | high | xhigh | max`; persist `xhigh` (Opus 4.8/4.7 only) as your research default — the model itself defaults to `high` — while `max` is the deepest, session-only level.
+- **Maximum thoroughness on demand.** For exhaustive, correctness-critical work, turn on **ultracode** — `xhigh` plus automatic multi-agent workflows: `/effort ultracode` per session, or make it your default by launching with `claude --settings '{"ultracode": true}'`. Needs Dynamic Workflows enabled (on by default for Max/Team/Enterprise; on Pro, flip them on in `/config`). Reach for it on complex or large coding projects; for quick, interactive iteration use `/fast` (the same Opus, ~2.5× faster output) or a lower effort level.
+- **Auto by default.** Claude Code's `auto` permission mode is now the default — it runs lower-risk tool calls automatically (after a risk and prompt-injection check) and blocks the rest. Codex: `on-request` (or `never` per-project). Drop to `plan` (read-only) or `acceptEdits` when you want a tighter leash.
 - **One keyboard rule for Codex.** **Enter** sends now (or *injects* mid-turn). **Tab** *queues* for the next turn.
 
 → **Details:** [docs/configuration.md](docs/configuration.md) — full `settings.json` / `config.toml` reference, statusline scripts, permission modes deep-dive.
@@ -96,7 +97,7 @@ What that actually opts you into:
 **3. Resume yesterday's session** — `claude -c` or `codex resume --last` so context carries over.
 
 > [!TIP]
-> **Ask the AI to double-check after it finishes.** When the AI completes any complex task, send a brief follow-up: *"Double-check everything is correct. Zero errors. Improve. Make everything professional."* It re-examines its own work — catches mistakes, polishes weak spots. One of the cheapest accuracy boosts available.
+> **Ask the AI to double-check after it finishes.** When the AI completes any complex task, send a brief follow-up: *"Double-check everything is correct. Zero errors. Improve. Make everything professional."* It re-examines its own work — catches mistakes, polishes weak spots. One of the cheapest accuracy boosts available. For code changes specifically, run `/code-review` (or `/code-review ultra` for a deep multi-agent cloud review of the branch or a PR).
 
 → **Details:** [docs/workflow.md](docs/workflow.md) — pane shortcuts, parallel agents, daily flow.
 
