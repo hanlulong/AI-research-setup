@@ -7,7 +7,7 @@ Get both tools running with the strongest models, the right permission level, an
 > [!IMPORTANT]
 > **Easy path: ask the AI.** Once Codex or Claude Code is running, paste:
 >
-> > *"Configure yourself for research work: use the latest model (Opus 4.8), set thinking effort to xhigh, keep auto permission mode, and add a sensible statusline. Show me the diff before applying."*
+> > *"Configure yourself for research work: use the latest model, set thinking effort to xhigh, keep a sensible permission mode, and add a sensible statusline. Show me the diff before applying."*
 >
 > Everything below is the reference for what gets changed and where, in case you want to edit by hand.
 

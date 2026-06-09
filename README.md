@@ -56,7 +56,7 @@ Verify with `codex --version` and `claude --version`. The first run of either to
 
 Ask Codex or Claude Code to configure itself:
 
-> *"Configure yourself for research work: use the latest model (Opus 4.8), set thinking effort to xhigh, keep auto permission mode, and add a sensible statusline. Show me the diff before applying."*
+> *"Configure yourself for research work: use the latest model, set thinking effort to xhigh, keep a sensible permission mode, and add a sensible statusline. Show me the diff before applying."*
 
 What that actually opts you into:
 
