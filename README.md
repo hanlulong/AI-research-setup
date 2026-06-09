@@ -5,7 +5,7 @@ A step-by-step guide to setting up AI tools for research, on **Windows** and **m
 Five steps, in order: install → configure → workflow → software → backup. Each step keeps the essentials in this README and links to a sub-page in [docs/](docs/) for the full detail.
 
 > [!TIP]
-> **Picking just one?** As of May 2026, GPT models still edge out Claude on day-to-day research coding — though Opus 4.8's release narrows the gap considerably. If your budget only fits one subscription, start with [ChatGPT](https://chatgpt.com/) Plus/Pro and Codex CLI. Claude Code is excellent and the two complement each other well when run together — but a one-tool budget still points at OpenAI today. Re-check before committing; rankings flip every few months, and Opus 4.8 is worth a fresh look.
+> **Picking just one?** As of May 2026, GPT models still edge out Claude on day-to-day research coding. If your budget only fits one subscription, start with [ChatGPT](https://chatgpt.com/) Plus/Pro and Codex CLI. Claude Code is excellent and the two complement each other well when run together — but a one-tool budget still points at OpenAI today.
 
 > [!IMPORTANT]
 > **After Step 1, ask the AI.** Once `claude` or `codex` is running, paste your intent (e.g. *"install stata-mcp and wire it up"*) and let the AI handle the commands. Sub-pages still document the raw commands, but the recommended path is to use the AI as your installer and configurator.
