@@ -81,7 +81,7 @@ Recommended **user-level** `~/.claude/settings.json`:
 ```
 
 > [!TIP]
-> **Make ultracode your default.** `ultracode` isn't a persistable settings key — launch every session in it via a shell alias instead. It pairs `xhigh` effort with automatic multi-agent workflows on substantive tasks. See [Reasoning, ultracode & fast mode](#reasoning-ultracode--fast-mode).
+> **Make ultracode your default.** `ultracode` isn't read from your `settings.json` file — make it stick by passing it on every launch via a shell alias instead. It pairs `xhigh` effort with automatic multi-agent workflows on substantive tasks. See [Reasoning, ultracode & fast mode](#reasoning-ultracode--fast-mode).
 
 ### Statusline
 
@@ -209,7 +209,7 @@ Recommended **user-level** `~/.codex/config.toml`:
 
 ```toml
 model = "gpt-5.5"
-model_reasoning_effort = "xhigh"   # low | medium | high | xhigh (xhigh = deepest; see Codex docs for the full set)
+model_reasoning_effort = "xhigh"   # minimal | low | medium | high | xhigh (xhigh = deepest)
 approval_policy        = "on-request"   # untrusted | on-request | never
 sandbox_mode           = "workspace-write"  # read-only | workspace-write | danger-full-access
 

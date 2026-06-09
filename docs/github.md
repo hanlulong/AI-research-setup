@@ -93,7 +93,7 @@ Verify:
 ```bash
 gh auth status                # should show "Logged in to github.com as <you>"
 ssh -T git@github.com         # should say "Hi <you>! You've successfully authenticated..."
-gh repo view <your-username>  # any public repo of yours
+gh repo list                  # lists your repos — confirms API access
 ```
 
 After this, `git clone git@github.com:...`, `gh repo create`, `gh pr create`, and AI-tool GitHub integrations all work without further setup.
