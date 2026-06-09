@@ -5,7 +5,7 @@ A step-by-step guide to setting up AI tools for research, on **Windows** and **m
 Five steps, in order: install → configure → workflow → software → backup. Each step keeps the essentials in this README and links to a sub-page in [docs/](docs/) for the full detail.
 
 > [!TIP]
-> **Picking just one?** As of May 2026, GPT models still edge out Claude on day-to-day research coding. If your budget only fits one subscription, start with [ChatGPT](https://chatgpt.com/) Plus/Pro and Codex CLI. Claude Code is excellent and the two complement each other well when run together — but a one-tool budget still points at OpenAI today.
+> **Picking just one?** As of May 2026, GPT models still edge out Claude on day-to-day research coding. If your budget only fits one subscription, start with ChatGPT Plus/Pro and [Codex CLI](https://developers.openai.com/codex/cli). [Claude Code](https://claude.com/claude-code) is excellent and the two complement each other well when run together — but a one-tool budget still points at OpenAI today.
 
 > [!IMPORTANT]
 > **After Step 1, ask the AI.** Once `claude` or `codex` is running, paste your intent (e.g. *"install stata-mcp and wire it up"*) and let the AI handle the commands. Sub-pages still document the raw commands, but the recommended path is to use the AI as your installer and configurator.
@@ -24,27 +24,25 @@ Five steps, in order: install → configure → workflow → software → backup
 
 > **Goal:** `codex` and `claude` running in your terminal.
 
-This step requires running commands yourself — the AI can't install itself yet. Both tools install via npm, so install Node.js (LTS, v22+) first.
+This step requires running commands yourself — the AI can't install itself yet. The official installers below are self-contained — no Node.js required.
 
 **Windows** (PowerShell):
 
 ```powershell
-winget install -e --id OpenJS.NodeJS.LTS
-npm install -g @openai/codex
-npm install -g @anthropic-ai/claude-code
+irm https://chatgpt.com/codex/install.ps1 | iex   # Codex CLI
+irm https://claude.ai/install.ps1 | iex           # Claude Code
 ```
 
 **macOS:**
 
 ```bash
-brew install node
-npm install -g @openai/codex
-npm install -g @anthropic-ai/claude-code
+curl -fsSL https://chatgpt.com/codex/install.sh | sh     # Codex CLI
+curl -fsSL https://claude.ai/install.sh | bash           # Claude Code
 ```
 
 Verify with `codex --version` and `claude --version`. The first run of either tool opens a browser to authenticate against your ChatGPT or Claude account. If a command isn't found or Codex exits with no output, see [troubleshooting](docs/install.md#troubleshooting) (on some bare Windows installs Codex needs the Visual C++ runtime).
 
-→ **Details:** [docs/install.md](docs/install.md) — alternative install paths, prerequisites, troubleshooting.
+→ **Details:** [docs/install.md](docs/install.md) — Homebrew/npm alternatives, prerequisites, troubleshooting.
 
 **Next:** [Step 2 — Configure](#step-2--configure--use-effectively)
 
