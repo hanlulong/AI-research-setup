@@ -38,7 +38,7 @@ Out of the box, Codex leans cautious; Claude Code now defaults to `auto` permiss
 | **Permission level** | `approval_policy = "on-request"` (or `"never"` per-project) | `auto` (the default) — or `"permissions": { "defaultMode": "acceptEdits" }` for a tighter leash |
 
 > [!NOTE]
-> Model names rotate. Use the `/model` picker inside Codex or Claude Code to see what's available on your plan. As of May 2026, `gpt-5.5` is the Codex default; `claude-opus-4-8` is the strongest Claude.
+> Model names rotate. Use the `/model` picker inside Codex or Claude Code to see what's available on your plan. As of June 2026, `gpt-5.5` is the Codex default; `claude-opus-4-8` is the strongest Claude.
 
 > [!NOTE]
 > **Effort and thinking are separate knobs.** `effortLevel` sets reasoning depth — the ladder runs `low | medium | high | xhigh | max`. Opus 4.8 defaults to `high`; persist `"effortLevel": "xhigh"` for a deeper research default. Separately, `"alwaysThinkingEnabled": true` shows extended thinking by default. For model-specific limits, the deepest settings, and automatic multi-agent workflows, see [Reasoning, ultracode & fast mode](#reasoning-ultracode--fast-mode).
