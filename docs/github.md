@@ -5,7 +5,7 @@ Two parts: (a) install and authenticate the GitHub CLI, then (b) the full dual-c
 [← Back to README](../README.md)
 
 > [!IMPORTANT]
-> **Most of this is AI-doable.** Once Codex or Claude is running, ask it to set your git identity, apply sensible defaults, and create/push repos — Claude Code's default `auto` mode runs lower-risk commands like these for you and pauses on anything risky. You only need to run the `git`/`gh` install and the interactive `gh auth login` (browser flow) yourself.
+> **Most of this is AI-doable.** Once Codex or Claude is running, ask it to set your git identity, apply sensible defaults, and create/push repos — Claude Code's `auto` mode (once you enable it) runs lower-risk commands like these for you and pauses on anything risky. You only need to run the `git`/`gh` install and the interactive `gh auth login` (browser flow) yourself.
 
 ## Contents
 

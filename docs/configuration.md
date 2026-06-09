@@ -7,41 +7,98 @@ Get both tools running with the strongest models, the right permission level, an
 > [!IMPORTANT]
 > **Easy path: ask the AI.** Once Codex or Claude Code is running, paste:
 >
-> > *"Configure yourself for research work: use the latest model, set thinking effort to xhigh, keep a sensible permission mode, and add a sensible statusline. Show me the diff before applying."*
+> > *"Configure yourself for research work: use the latest model, set reasoning effort to xhigh, keep a sensible permission mode, and add a sensible statusline. Show me the diff before applying."*
 >
 > Everything below is the reference for what gets changed and where, in case you want to edit by hand.
 
 ## Contents
 
 - [Day-1 settings](#day-1-settings)
+- [Codex CLI](#codex-cli)
+  - [config.toml](#configtoml)
+  - [Keyboard shortcuts](#keyboard-shortcuts)
+  - [AGENTS.md](#agentsmd)
 - [Claude Code](#claude-code)
   - [settings.json](#settingsjson)
   - [Statusline](#statusline)
   - [Permission modes](#permission-modes)
   - [Reasoning, ultracode & fast mode](#reasoning-ultracode--fast-mode)
   - [CLAUDE.md](#claudemd)
-- [Codex CLI](#codex-cli)
-  - [config.toml](#configtoml)
-  - [Keyboard shortcuts](#keyboard-shortcuts)
-  - [AGENTS.md](#agentsmd)
 - [Skills and MCP servers](#skills-and-mcp-servers)
 
 ## Day-1 settings
 
-Out of the box, Codex leans cautious; Claude Code now defaults to `auto` permission mode. For research work, set three things deliberately:
+Out of the box both tools lean cautious — Codex prompts on request, and Claude Code starts in its `default` mode (auto-approves reads, prompts for the rest). For research work, set three things deliberately:
 
 | Setting | Codex CLI | Claude Code |
 |---|---|---|
 | **File** | `~/.codex/config.toml` | `~/.claude/settings.json` |
 | **Latest model** | `model = "gpt-5.5"` | `"model": "claude-opus-4-8"` |
 | **Deep reasoning** | `model_reasoning_effort = "xhigh"` | `"effortLevel": "xhigh"` |
-| **Permission level** | `approval_policy = "on-request"` (or `"never"` per-project) | `auto` (the default) — or `"permissions": { "defaultMode": "acceptEdits" }` for a tighter leash |
+| **Permission level** | `approval_policy = "on-request"` (or `"never"` per-project) | `auto` (opt-in — set `"defaultMode": "auto"`) — or `"acceptEdits"` for a tighter leash |
 
 > [!NOTE]
 > Model names rotate. Use the `/model` picker inside Codex or Claude Code to see what's available on your plan. As of June 2026, `gpt-5.5` is the Codex default; `claude-opus-4-8` is the strongest Claude.
 
 > [!NOTE]
 > **Effort and thinking are separate knobs.** `effortLevel` sets reasoning depth — the ladder runs `low | medium | high | xhigh | max`. Opus 4.8 defaults to `high`; persist `"effortLevel": "xhigh"` for a deeper research default. Separately, `"alwaysThinkingEnabled": true` shows extended thinking by default. For model-specific limits, the deepest settings, and automatic multi-agent workflows, see [Reasoning, ultracode & fast mode](#reasoning-ultracode--fast-mode).
+
+---
+
+## Codex CLI
+
+### config.toml
+
+Two scopes:
+
+- `~/.codex/config.toml` — user-level
+- `<repo>/.codex/config.toml` — project-level
+
+Recommended **user-level** `~/.codex/config.toml`:
+
+```toml
+model = "gpt-5.5"
+model_reasoning_effort = "xhigh"   # minimal | low | medium | high | xhigh (xhigh = deepest)
+approval_policy        = "on-request"   # untrusted | on-request | never
+sandbox_mode           = "workspace-write"  # read-only | workspace-write | danger-full-access
+
+# Example MCP server: context7 pulls up-to-date library docs on demand
+[mcp_servers.context7]
+command = "npx"
+args    = ["-y", "@upstash/context7-mcp"]
+
+# A faster, read-only profile — switch with: codex --profile fast
+[profiles.fast]
+model_reasoning_effort = "low"
+sandbox_mode           = "read-only"
+```
+
+The same depth-vs-speed trade-off applies here: keep `model_reasoning_effort = "xhigh"` for large or correctness-critical work, and switch to the read-only `fast` profile (`codex --profile fast`) for quick, interactive iteration.
+
+### Keyboard shortcuts
+
+The non-obvious one — **Tab vs Enter** in the TUI composer:
+
+- **Enter** sends your message immediately. If Codex is mid-turn, Enter *injects* your message into the running turn (interrupts/redirects).
+- **Tab** *queues* your typed text for the next turn. Codex picks it up after the current turn finishes, without interruption.
+
+Use Tab to add context while Codex works. Use Enter to course-correct mid-flight.
+
+Other essential keys:
+
+| Key       | Action                                          |
+|-----------|-------------------------------------------------|
+| `Ctrl+C`  | Close session                                   |
+| `Ctrl+L`  | Clear screen (keep history)                     |
+| `Ctrl+O`  | Copy latest completed output                    |
+| `Ctrl+R`  | Search prompt history                           |
+| `Ctrl+G`  | Open `$EDITOR` to draft a longer prompt         |
+| `Esc Esc` | Edit your previous message (tap again for older)|
+| `↑` / `↓` | Navigate composer draft history                 |
+
+### AGENTS.md
+
+Codex's equivalent of CLAUDE.md. Project conventions, read on every session. Scaffold one with `/init` inside Codex.
 
 ---
 
@@ -127,13 +184,13 @@ printf "[%s] %s%s  \$%.2f" \
 
 | Mode                | What it does                                                                                          |
 |---------------------|------------------------------------------------------------------------------------------------------|
-| `auto` *(default)*  | Runs tool calls it assesses as lower-risk automatically (after a risk and prompt-injection check) and blocks the rest. |
+| `auto` *(opt-in)*   | Runs tool calls it assesses as lower-risk automatically (after a risk and prompt-injection check) and blocks the rest. |
 | `default`           | Prompts the first time each tool is used.                                                             |
 | `acceptEdits`       | Auto-accepts file edits and common filesystem commands within the working directory.                 |
 | `plan`              | Plan Mode: read-only — Claude inspects and reasons but does not edit.                                 |
 | `bypassPermissions` | Skips all prompts. Use only in containers / VMs / scratch dirs.                                       |
 
-**`auto` is now the default**, and it suits research: it keeps you moving while still pausing on anything risky. Requirements: model Opus 4.6 or later (or Sonnet 4.6), the Anthropic API provider (Bedrock / Vertex / Foundry not supported), and Claude Code v2.1.83+. Want a tighter leash on a project? Override to `acceptEdits` or `plan`.
+**Enable `auto`** — it suits research: it keeps you moving while still pausing on anything risky. It's an opt-in research preview, not the out-of-box default; set `"defaultMode": "auto"` in user settings (see below) to start every session there. Requirements: Claude Code v2.1.83+ and model Opus 4.6 or later (or Sonnet 4.6) on the Anthropic API — on Bedrock / Vertex / Foundry it additionally needs `CLAUDE_CODE_ENABLE_AUTO_MODE=1` and Opus 4.7/4.8. Want a tighter leash on a project? Override to `acceptEdits` or `plan`.
 
 > [!IMPORTANT]
 > **Set `auto` at the user level, not in a committed repo file.** `defaultMode: "auto"` is honored only from user (`~/.claude/settings.json`), CLI-flag, or org-policy settings. It is **ignored** in a repo's `<repo>/.claude/settings.json` or `.claude/settings.local.json` — those are repo-controllable, so a cloned repo can't silently grant itself auto. The reverse works fine: a committed `{ "permissions": { "defaultMode": "acceptEdits" } }` (or `"plan"`) *is* respected, so use it to tighten a shared project.
@@ -181,6 +238,9 @@ Persist `"effortLevel": "xhigh"` in `settings.json` as a durable research defaul
 **Picking a gear.** Reach for **ultracode** on complex or large coding projects — a multi-file refactor, a full replication package or audit, a structural estimation, a subtle derivation — where getting it exhaustively right outweighs speed or token cost. Drop to **`/fast`** or a lower effort level for quick, interactive iteration. Most everyday work sits on the `high`/`xhigh` middle.
 
 > [!NOTE]
+> **Codex equivalent.** Codex has no ultracode, but `model_reasoning_effort` (`minimal`…`xhigh`) is its effort dial and `codex --profile fast` its fast lane — see [config.toml](#configtoml).
+
+> [!NOTE]
 > **Mind your usage.** Ultracode, fast mode, and several parallel panes all multiply token consumption, and subscription plans enforce rolling usage caps. Watch the statusline's `week %` and reach for the cheaper levers as you near a cap — fewer panes, `/fast`, or a lower effort level — reserving ultracode for the runs that genuinely need it.
 
 **Reviewing code.** Run `/code-review` (effort `low` → `max`) on your changes; `/code-review ultra` launches a deep multi-agent **cloud** review of the current branch or a PR number (user-triggered, billed).
@@ -193,63 +253,6 @@ Project conventions Claude Code reads on every session. Locations:
 - `<repo>/CLAUDE.md` — project instructions, committed to git
 
 Use these for: build/test/lint commands, code style, folder conventions, "always do X / never do Y" rules. Keep them short — every line costs context.
-
----
-
-## Codex CLI
-
-### config.toml
-
-Two scopes:
-
-- `~/.codex/config.toml` — user-level
-- `<repo>/.codex/config.toml` — project-level
-
-Recommended **user-level** `~/.codex/config.toml`:
-
-```toml
-model = "gpt-5.5"
-model_reasoning_effort = "xhigh"   # minimal | low | medium | high | xhigh (xhigh = deepest)
-approval_policy        = "on-request"   # untrusted | on-request | never
-sandbox_mode           = "workspace-write"  # read-only | workspace-write | danger-full-access
-
-# Example MCP server: context7 pulls up-to-date library docs on demand
-[mcp_servers.context7]
-command = "npx"
-args    = ["-y", "@upstash/context7-mcp"]
-
-# A faster, read-only profile — switch with: codex --profile fast
-[profiles.fast]
-model_reasoning_effort = "low"
-sandbox_mode           = "read-only"
-```
-
-The same depth-vs-speed trade-off applies here: keep `model_reasoning_effort = "xhigh"` for large or correctness-critical work, and switch to the read-only `fast` profile (`codex --profile fast`) for quick, interactive iteration.
-
-### Keyboard shortcuts
-
-The non-obvious one — **Tab vs Enter** in the TUI composer:
-
-- **Enter** sends your message immediately. If Codex is mid-turn, Enter *injects* your message into the running turn (interrupts/redirects).
-- **Tab** *queues* your typed text for the next turn. Codex picks it up after the current turn finishes, without interruption.
-
-Use Tab to add context while Codex works. Use Enter to course-correct mid-flight.
-
-Other essential keys:
-
-| Key       | Action                                          |
-|-----------|-------------------------------------------------|
-| `Ctrl+C`  | Close session                                   |
-| `Ctrl+L`  | Clear screen (keep history)                     |
-| `Ctrl+O`  | Copy latest completed output                    |
-| `Ctrl+R`  | Search prompt history                           |
-| `Ctrl+G`  | Open `$EDITOR` to draft a longer prompt         |
-| `Esc Esc` | Edit your previous message (tap again for older)|
-| `↑` / `↓` | Navigate composer draft history                 |
-
-### AGENTS.md
-
-Codex's equivalent of CLAUDE.md. Project conventions, read on every session. Scaffold one with `/init` inside Codex.
 
 ---
 

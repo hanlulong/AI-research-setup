@@ -95,7 +95,7 @@ Default bindings per [Microsoft Docs](https://learn.microsoft.com/en-us/windows/
 ### Why four AI agents
 
 - **Parallel projects.** One agent per project, each with its own context and folder. Switch between them at human speed; never lose state.
-- **Plan + execute.** One in plan mode (read-only) for design and research, the other in the default `auto` mode for execution — it runs lower-risk tool calls automatically and blocks the rest. They coordinate via shared files (one writes `plan.md`, the other implements).
+- **Plan + execute.** One in plan mode (read-only) for design and research, the other in `auto` mode for execution — it runs lower-risk tool calls automatically and blocks the rest. They coordinate via shared files (one writes `plan.md`, the other implements).
 - **Model comparison.** Send the same hard problem to two different models (one Codex, one Claude) — pick whichever answers better. The two leapfrog each other, so re-run the comparison periodically.
 
 ## Daily flow

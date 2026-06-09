@@ -54,13 +54,13 @@ Verify with `codex --version` and `claude --version`. The first run of either to
 
 Ask Codex or Claude Code to configure itself:
 
-> *"Configure yourself for research work: use the latest model, set thinking effort to xhigh, keep a sensible permission mode, and add a sensible statusline. Show me the diff before applying."*
+> *"Configure yourself for research work: use the latest model, set reasoning effort to xhigh, keep a sensible permission mode, and add a sensible statusline. Show me the diff before applying."*
 
 What that actually opts you into:
 
 - **Latest model + deep reasoning.** Codex: `gpt-5.5` + `xhigh`. Claude Code: `claude-opus-4-8` (alias `opus`) + `effortLevel: "xhigh"`. Effort runs `low | medium | high | xhigh | max`; persist `xhigh` (Opus 4.8/4.7 only) as your research default — the model itself defaults to `high` — while `max` is the deepest, session-only level.
 - **Maximum thoroughness on demand.** For exhaustive, correctness-critical work, turn on **ultracode** — `xhigh` plus automatic multi-agent workflows: `/effort ultracode` per session, or make it your default by launching with `claude --settings '{"ultracode": true}'`. Needs Dynamic Workflows enabled (on by default for Max/Team/Enterprise; on Pro, flip them on in `/config`). Reach for it on complex or large coding projects; for quick, interactive iteration use `/fast` (the same Opus, ~2.5× faster output) or a lower effort level.
-- **Auto by default.** Claude Code's `auto` permission mode is now the default — it runs lower-risk tool calls automatically (after a risk and prompt-injection check) and blocks the rest. Codex: `on-request` (or `never` per-project). Drop to `plan` (read-only) or `acceptEdits` when you want a tighter leash.
+- **Auto mode for execution.** Claude Code's `auto` permission mode runs lower-risk tool calls automatically (after a risk and prompt-injection check) and blocks the rest. It's opt-in, not the out-of-box default — enable it and make it your default with `"defaultMode": "auto"` in user settings. Codex: `on-request` (or `never` per-project). Drop to `plan` (read-only) or `acceptEdits` when you want a tighter leash.
 - **One keyboard rule for Codex.** **Enter** sends now (or *injects* mid-turn). **Tab** *queues* for the next turn.
 
 → **Details:** [docs/configuration.md](docs/configuration.md) — full `settings.json` / `config.toml` reference, statusline scripts, permission modes deep-dive.
