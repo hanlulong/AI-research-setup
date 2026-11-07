@@ -37,6 +37,8 @@ Out of the box, Codex prompts on request, and Claude Code (v2.1.283+) starts int
 | **Deep reasoning** | `model_reasoning_effort = "xhigh"` | `/effort xhigh` (saved per model under `modelSettings`) |
 | **Permission level** | `approval_policy = "on-request"` (or `"never"` per-project) | `auto` (built-in start mode since v2.1.283; pin with `"defaultMode": "auto"`), or `"acceptEdits"` for a tighter leash |
 
+`~` is your home folder; on Windows that is `%USERPROFILE%` (e.g. `C:\Users\<you>`).
+
 > [!NOTE]
 > Model names rotate. Use the `/model` picker inside Codex or Claude Code to see what's available on your plan. As of November 2026, `gpt-6.1-sol` is OpenAI's pick for Codex on paid plans and `gpt-6-astra` its most capable (lower usage limits); GPT-5.5 left Codex for ChatGPT sign-in on 2026-10-14. In Claude Code, `opus` = Opus 5.5; Fable 5.1 (`/model fable`) is the most capable for long, hard tasks and may bill to usage credits depending on plan.
 
@@ -158,7 +160,7 @@ Inside Claude Code, run **`/statusline`** to scaffold one interactively. Or ask:
 
 <br>
 
-A starter (Mac/Linux; requires `jq`):
+A starter for Mac/Linux (requires `jq`: `brew install jq`):
 
 ```bash
 #!/usr/bin/env bash
@@ -179,7 +181,7 @@ printf "[%s] %s%s  \$%.2f" \
 [ -n "$WEEK" ] && printf "  | week %.0f%%" "$WEEK"
 ```
 
-`chmod +x ~/.claude/statusline.sh`. On Windows, Claude Code uses Git Bash if installed; for PowerShell, write a `.ps1` and reference it as `powershell -NoProfile -File C:\path\to\statusline.ps1`.
+`chmod +x ~/.claude/statusline.sh`. On Windows, Claude Code runs the command through Git Bash if installed, otherwise PowerShell. Write paths with forward slashes or `~`; Git Bash strips backslashes and the status line fails without a visible error. For PowerShell, use `powershell -NoProfile -File C:/Users/<you>/.claude/statusline.ps1`, and copy the PowerShell example from the [Windows configuration section of the statusline docs](https://code.claude.com/docs/en/statusline#windows-configuration) (or ask `/statusline` to generate one).
 
 </details>
 
@@ -261,7 +263,7 @@ Use these for: build/test/lint commands, code style, folder conventions, "always
 
 ## Skills and MCP servers
 
-Both tools support **skills** (reusable instruction bundles invoked with `/<name>` or `$<name>`) and **MCP servers** (external tool capabilities).
+Both tools support **skills** (reusable instruction bundles invoked with `/<name>` in Claude Code or `$<name>` in Codex) and **MCP servers** (external tool capabilities).
 
 **To install either: paste the GitHub URL to your AI and ask "install this."** The AI reads the README and runs the right command for whichever tool you're using.
 
@@ -275,7 +277,8 @@ Both tools support **skills** (reusable instruction bundles invoked with `/<name
 **Claude Code MCP:**
 
 ```bash
-claude mcp add <name> -- <command> [args...]
+# --scope user = all projects; the default scope, local, is this project only
+claude mcp add --scope user <name> -- <command> [args...]
 # HTTP transport:
 claude mcp add --transport http <name> <url> --scope user
 ```
@@ -287,7 +290,7 @@ codex mcp add <name> --url <url>
 # or add a [mcp_servers.<name>] block in config.toml
 ```
 
-**Skills:** drop into `~/.claude/skills/<name>/` (Claude Code) or `~/.codex/skills/<name>/` (Codex), or run the skill's own installer.
+**Skills:** drop into `~/.claude/skills/<name>/` (Claude Code) or `~/.agents/skills/<name>/` (Codex; project skills go in `.agents/skills/`), or run the skill's own installer. Remove any old copies in `~/.codex/skills/` so skills don't show up twice.
 
 </details>
 

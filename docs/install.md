@@ -18,6 +18,8 @@ None for the native installers below — they bundle their own runtime, so **Nod
 
 You only need **Node.js (LTS, v22+)** if you take the npm install path instead, or plan to run Node-based MCP servers (e.g. the `context7` example in [configuration](./configuration.md#configtoml), which launches via `npx`). To install it then: Windows `winget install -e --id OpenJS.NodeJS.LTS`; macOS `brew install node` (alternatives: [nodejs.org](https://nodejs.org/), or [nvm](https://github.com/nvm-sh/nvm) / [fnm](https://github.com/Schniz/fnm) for multiple versions side-by-side).
 
+**macOS:** the `brew` commands in this guide need [Homebrew](https://brew.sh); `git` comes with Apple's Command Line Tools (`xcode-select --install`).
+
 ## Codex CLI
 
 Official standalone installer — no Node required ([docs](https://developers.openai.com/codex/cli)):
@@ -74,7 +76,7 @@ curl -fsSL https://claude.ai/install.sh | bash
 
 </details>
 
-Alternatives: `brew install --cask claude-code` (macOS), `winget install Anthropic.ClaudeCode` (Windows), or the npm package `npm install -g @anthropic-ai/claude-code` (needs Node 18+).
+Alternatives: `brew install --cask claude-code` (macOS), `winget install Anthropic.ClaudeCode` (Windows), or the npm package `npm install -g @anthropic-ai/claude-code` (needs Node 22+). Homebrew and WinGet installs don't auto-update: run `brew upgrade claude-code` or `winget upgrade Anthropic.ClaudeCode`.
 
 Verify: `claude --version` (expect 2.1.284 or newer: Opus 5.5, `auto` as the starting mode and the current ultracode toggle need it). Native installs auto-update; `claude update` updates now, and `claude doctor` prints read-only diagnostics. On npm, update with `npm install -g @anthropic-ai/claude-code@latest`.
 
@@ -87,18 +89,21 @@ codex   # opens browser → Sign in with ChatGPT
 claude  # opens browser → Sign in with Anthropic / Claude account
 ```
 
-Both store credentials locally; you won't be prompted again. Switch accounts later with `/login` inside the TUI.
+Both store credentials locally; you won't be prompted again. Switch accounts later with `/login` inside Claude Code; in Codex, run `/logout`, then `codex login`.
 
-For API-key billing instead of subscription auth, set `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in your environment before launching.
+For API-key billing instead of subscription auth: Claude Code reads `ANTHROPIC_API_KEY` from your environment. Codex needs a one-time login with the key; on macOS run `printenv OPENAI_API_KEY | codex login --with-api-key`, and on Windows see the [Codex auth docs](https://learn.chatgpt.com/docs/auth) or ask the AI. (`CODEX_API_KEY` is only for non-interactive runs such as `codex exec`.)
 
 ## Troubleshooting
 
 > [!NOTE]
-> **Codex CLI exits silently on Windows.** Install the Visual C++ runtime — Codex needs it and it's missing on some bare Windows installs ([issue #20827](https://github.com/openai/codex/issues/20827)):
+> **Codex CLI exits silently on Windows.** Older Codex releases installed via npm could exit silently on bare Windows without the Visual C++ runtime ([issue #20827](https://github.com/openai/codex/issues/20827), fixed by [openai/codex#22905](https://github.com/openai/codex/pull/22905)). Update Codex first; if it still exits silently, install the runtime:
 >
 > ```powershell
 > winget install -e --id Microsoft.VCRedist.2015+.x64
 > ```
+
+> [!NOTE]
+> **PowerShell blocks the installer script?** Use the vendor form `powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 | iex"` (same pattern for the other `irm` installers).
 
 > [!NOTE]
 > **Claude Code can't find Git Bash on Windows.** Point it at the binary explicitly in `~/.claude/settings.json`:

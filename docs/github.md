@@ -81,12 +81,12 @@ Then **authenticate** in your terminal (browser opens):
 gh auth login
 ```
 
-It asks four things:
+It asks a few questions (the order varies by `gh` version):
 
-1. **GitHub.com or GitHub Enterprise?** → GitHub.com
-2. **Preferred protocol for git operations?** → SSH (`gh` will offer to generate and upload a key for you)
-3. **Upload your SSH public key to your GitHub account?** → Yes
-4. **How would you like to authenticate?** → Login with a web browser
+- **Which host or account?** → GitHub.com
+- **How would you like to authenticate?** → Login with a web browser
+- **Preferred protocol for git operations?** → SSH
+- **SSH key?** → upload your existing public key, or let `gh` generate one, then give it a title
 
 Verify:
 
