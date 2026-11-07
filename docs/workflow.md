@@ -120,7 +120,7 @@ Distinct from the 4-pane setup above (where you run several AI sessions in paral
 - Reviewing several files in parallel
 - Running independent experiments
 
-In Claude Code, the orchestrator delegates via the `Agent` tool — specialized subagent types like `Explore` handle parallel code search and review. For larger, structured fan-outs it can also run deterministic multi-agent **workflows** via the Workflow tool (Dynamic workflows: all paid plans; on Pro, turn them on in `/config`), and [ultracode](./configuration.md#reasoning-ultracode--fast-mode) turns this on automatically for substantive tasks. Codex CLI has comparable parallel-agent features; check the current `codex` docs for the exact syntax.
+In Claude Code, the orchestrator delegates via the `Agent` tool — specialized subagent types like `Explore` handle parallel code search and review. For larger, structured fan-outs it can also run deterministic multi-agent **workflows** via the Workflow tool (Dynamic workflows: all paid plans; on Pro, turn them on in `/config`), and [ultracode](./configuration.md#reasoning-ultracode--fast-mode) turns this on automatically for substantive tasks. Codex CLI runs subagents by default: switch between agent threads with `/subagents`, and the `ultra` effort level (on models that offer it) splits a task across subagents.
 
 > [!TIP]
 > **Don't over-delegate.** Subagents help when work is genuinely parallel and independent. For sequential work, one focused agent beats three confused ones. The cost (in context and in your time managing them) only pays off when you can run 2+ tasks at the same time without dependencies between them.
