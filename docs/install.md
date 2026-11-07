@@ -46,7 +46,7 @@ curl -fsSL https://chatgpt.com/codex/install.sh | sh
 
 Alternatives: `brew install --cask codex` (macOS), or the npm package `npm install -g @openai/codex` (needs Node).
 
-Verify: `codex --version` (expect 0.46.0 or newer — needed for the `codex mcp add` step later). The standalone installer self-updates; on npm, update with `npm install -g @openai/codex@latest`.
+Verify: `codex --version` (expect 0.134.0 or newer: profile files like `fast.config.toml` need it). Update with `codex update` (or re-run the installer); on npm, update with `npm install -g @openai/codex@latest`.
 
 ## Claude Code
 
@@ -76,7 +76,7 @@ curl -fsSL https://claude.ai/install.sh | bash
 
 Alternatives: `brew install --cask claude-code` (macOS), `winget install Anthropic.ClaudeCode` (Windows), or the npm package `npm install -g @anthropic-ai/claude-code` (needs Node 18+).
 
-Verify: `claude --version` (expect 2.1.83 or newer — `auto` permission mode needs it). Native installs auto-update; on npm, update with `npm install -g @anthropic-ai/claude-code@latest`.
+Verify: `claude --version` (expect 2.1.284 or newer: Opus 5.5, `auto` as the starting mode and the current ultracode toggle need it). Native installs auto-update; `claude update` updates now, and `claude doctor` prints read-only diagnostics. On npm, update with `npm install -g @anthropic-ai/claude-code@latest`.
 
 **Windows companion: Git for Windows.** Install [Git for Windows](https://git-scm.com/downloads/win) so Claude Code can use Git Bash as its shell (better than PowerShell for shell-style commands). Without it, Claude Code falls back to PowerShell.
 
@@ -112,6 +112,6 @@ For API-key billing instead of subscription auth, set `OPENAI_API_KEY` or `ANTHR
 > ```
 
 > [!NOTE]
-> **Picking a Codex model.** `gpt-5.5` is the default; `gpt-5.5-pro` needs a higher-tier plan. Plan tier mainly affects usage caps. Defaults rotate — open the `/model` picker inside Codex to see what your account can actually select.
+> **Picking a Codex model.** GPT-5.5 was retired from Codex for ChatGPT sign-in on 2026-10-14 (API-key sessions keep it). Use `gpt-6.1-sol`, or `gpt-6-astra` for the hardest work at lower usage limits. On Free and Go, OpenAI lists Codex (GPT-6 Luna) only in the ChatGPT desktop app, subject to rollout. Plan tier mainly affects usage caps; open the `/model` picker inside Codex to see what your account can select.
 
 → Next: [Step 2 — Configure](./configuration.md)

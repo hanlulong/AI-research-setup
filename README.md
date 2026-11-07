@@ -58,9 +58,17 @@ Ask Codex or Claude Code to configure itself:
 
 What that actually opts you into:
 
-- **Latest model + deep reasoning.** Codex: `gpt-5.5` + `xhigh`. Claude Code: `claude-opus-4-8` (alias `opus`) + `effortLevel: "xhigh"`. Effort runs `low | medium | high | xhigh | max`; persist `xhigh` (Opus 4.8/4.7 only) as your research default — the model itself defaults to `high` — while `max` is the deepest, session-only level.
-- **Maximum thoroughness on demand.** For exhaustive, correctness-critical work, turn on **ultracode** — `xhigh` plus automatic multi-agent workflows: `/effort ultracode` per session, or make it your default by launching with `claude --settings '{"ultracode": true}'`. Needs Dynamic Workflows enabled (on by default for Max/Team/Enterprise; on Pro, flip them on in `/config`). Reach for it on complex or large coding projects; for quick, interactive iteration use `/fast` (the same Opus, ~2.5× faster output) or a lower effort level.
-- **Auto mode for execution.** Claude Code's `auto` permission mode runs lower-risk tool calls automatically (after a risk and prompt-injection check) and blocks the rest. It's opt-in, not the out-of-box default — enable it and make it your default with `"defaultMode": "auto"` in user settings. Codex: `on-request` (or `never` per-project). Drop to `plan` (read-only) or `acceptEdits` when you want a tighter leash.
+- **Model + deep reasoning.**
+  - Codex: `gpt-6.1-sol` + `xhigh` (`gpt-6-astra` is the most capable, at lower usage limits).
+  - Claude Code: `claude-opus-5-5` (alias `opus`); set `xhigh` with `/effort xhigh`, typed once per model and saved per model. Opus 5.5 defaults to `medium` and ignores a top-level `effortLevel` in user settings; `xhigh` uses noticeably more of your plan; `max` is the deepest, session-only level. For the longest, hardest tasks, `/model fable` (may bill to usage credits).
+- **Maximum thoroughness on demand.** **Ultracode** is automatic multi-agent workflows at your session's effort (pair it with `xhigh`).
+  - Turn it on with `/effort ultracode` per session (`/effort ultracode off` to stop), or make it your default with `"ultracode": true` in `~/.claude/settings.json` (works on Windows and macOS).
+  - It needs Dynamic workflows (all paid plans; on Pro, turn them on in `/config`) and uses noticeably more usage. Reach for it on complex or large projects.
+  - For quick iteration, use a lower effort level; `/fast` is the same Opus ~2.5× faster but bills to usage credits on subscriptions.
+- **Auto mode for execution.**
+  - Claude Code (v2.1.283+) starts interactive sessions in `auto` when your model supports it (otherwise Manual): lower-risk tool calls run automatically after a risk and prompt-injection check, and the rest are blocked. `claude -p` scripts start in Manual. Pin it with `"defaultMode": "auto"` in user settings if you like.
+  - Codex: `on-request` (or `never` per-project).
+  - Drop to `plan` (read-only) or `acceptEdits` when you want a tighter leash.
 - **One keyboard rule for Codex.** **Enter** sends now (or *injects* mid-turn). **Tab** *queues* for the next turn.
 
 → **Details:** [docs/configuration.md](docs/configuration.md) — full `settings.json` / `config.toml` reference, statusline scripts, permission modes deep-dive.
@@ -95,7 +103,7 @@ What that actually opts you into:
 **3. Resume yesterday's session** — `claude -c` or `codex resume --last` so context carries over.
 
 > [!TIP]
-> **Ask the AI to double-check after it finishes.** When the AI completes any complex task, send a brief follow-up: *"Double-check everything is correct. Zero errors. Improve. Make everything professional."* It re-examines its own work — catches mistakes, polishes weak spots. One of the cheapest accuracy boosts available. For code changes specifically, run `/code-review` (or `/code-review ultra` for a deep multi-agent cloud review of the branch or a PR).
+> **Ask the AI to double-check after it finishes.** When the AI completes any complex task, send a brief follow-up: *"Double-check everything is correct. Zero errors. Improve. Make everything professional."* It re-examines its own work — catches mistakes, polishes weak spots. One of the cheapest accuracy boosts available. For code changes specifically, run `/code-review` in Claude Code or `/review` in Codex (`/code-review ultra` launches a deep multi-agent cloud review of the branch or a PR; user-triggered, billed).
 
 → **Details:** [docs/workflow.md](docs/workflow.md) — pane shortcuts, parallel agents, daily flow.
 

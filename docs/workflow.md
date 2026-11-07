@@ -106,11 +106,11 @@ Default bindings per [Microsoft Docs](https://learn.microsoft.com/en-us/windows/
    - `codex resume --last` — resume most recent in cwd (or `codex resume` for an interactive picker)
 3. **State today's goal** in one sentence. The AI does better with a North Star.
 4. **Let it work.** Use Tab (Codex) to add context without interrupting the running turn. See [configuration.md](./configuration.md#keyboard-shortcuts) for the Tab vs Enter rule.
-5. **Manage context as it fills.** `/compact` condenses history while keeping direction on the *same* task. When you *switch* topics, `/clear` (Claude Code) or a fresh `codex` session starts clean — stale context otherwise leaks in and burns tokens.
+5. **Manage context as it fills.** `/compact` condenses history while keeping direction on the *same* task. When you *switch* topics, `/clear` (Claude Code), or `/clear` / `/new` in Codex, starts clean — stale context otherwise leaks in and burns tokens.
 6. **Commit at end of day.** Small commits, descriptive messages. Ask the AI to draft the message — it's usually good at this.
 
 > [!TIP]
-> **Ask the AI to double-check after it finishes.** When the AI completes a complex task — derivation, analysis, paper section, code change — send a brief follow-up: *"Double-check everything is correct. Zero errors. Improve. Make everything professional."* The AI re-examines its own output and catches mistakes, polishes weak spots, and raises the quality bar. One of the cheapest accuracy boosts available. To dial effort up or down: in Claude Code, raise reasoning with `/effort max` or `/effort ultracode` (xhigh + automatic multi-agent workflows; see [configuration.md](./configuration.md#reasoning-ultracode--fast-mode)), and drop to `/fast` or a lower level for routine edits; in Codex, raise or lower `model_reasoning_effort` (or `codex --profile fast` for quick work).
+> **Ask the AI to double-check after it finishes.** When the AI completes a complex task — derivation, analysis, paper section, code change — send a brief follow-up: *"Double-check everything is correct. Zero errors. Improve. Make everything professional."* The AI re-examines its own output and catches mistakes, polishes weak spots, and raises the quality bar. One of the cheapest accuracy boosts available. To dial effort up or down: in Claude Code, raise reasoning with `/effort max` or turn on `/effort ultracode` (automatic multi-agent workflows; see [configuration.md](./configuration.md#reasoning-ultracode--fast-mode)), and drop to a lower level for routine edits; in Codex, raise or lower `model_reasoning_effort`, or use `/fast` or the `fast` profile (`codex --profile fast`) for quick work.
 
 ## Subagents (within one session)
 
@@ -120,7 +120,7 @@ Distinct from the 4-pane setup above (where you run several AI sessions in paral
 - Reviewing several files in parallel
 - Running independent experiments
 
-In Claude Code, the orchestrator delegates via the `Agent` tool — specialized subagent types like `Explore` handle parallel code search and review. For larger, structured fan-outs it can also run deterministic multi-agent **workflows** via the Workflow tool (Dynamic Workflows — default on for Max/Team/Enterprise, off for Pro; toggle in `/config`), and [ultracode](./configuration.md#reasoning-ultracode--fast-mode) turns this on automatically for substantive tasks. Codex CLI has comparable parallel-agent features; check the current `codex` docs for the exact syntax.
+In Claude Code, the orchestrator delegates via the `Agent` tool — specialized subagent types like `Explore` handle parallel code search and review. For larger, structured fan-outs it can also run deterministic multi-agent **workflows** via the Workflow tool (Dynamic workflows: all paid plans; on Pro, turn them on in `/config`), and [ultracode](./configuration.md#reasoning-ultracode--fast-mode) turns this on automatically for substantive tasks. Codex CLI has comparable parallel-agent features; check the current `codex` docs for the exact syntax.
 
 > [!TIP]
 > **Don't over-delegate.** Subagents help when work is genuinely parallel and independent. For sequential work, one focused agent beats three confused ones. The cost (in context and in your time managing them) only pays off when you can run 2+ tasks at the same time without dependencies between them.
