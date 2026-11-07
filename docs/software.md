@@ -31,13 +31,16 @@ For publication-quality MATLAB figures, install [matlab-plot-skill](https://gith
 
 > *"Install matlab-plot-skill from https://github.com/hanlulong/matlab-plot-skill."*
 
-Invoke it in your session with the `$matlab-plot-skill` prefix (note: dollar-sign, not slash):
+Invoke it with `/matlab-plot-skill` in Claude Code or `$matlab-plot-skill` in Codex:
 
 ```
+# Claude Code
+/matlab-plot-skill refactor Plots/generate_my_figure.m into a publication-quality PDF figure.
+# Codex
 Use $matlab-plot-skill to refactor Plots/generate_my_figure.m into a publication-quality PDF figure.
 ```
 
-**Prerequisites:** MATLAB installed locally. Installer is `install.sh` (Mac/Linux) or `install.ps1` (Windows); validation uses `uv` and `pyyaml`.
+**Prerequisites:** MATLAB R2021a or newer, with `matlab` on your PATH (on macOS it often isn't after install; see the [skill's README](https://github.com/hanlulong/matlab-plot-skill#prerequisites)). Installer: `install.sh` (macOS/Linux) or `install.ps1` (Windows); `uv` and `pyyaml` are only needed to validate the repo.
 
 ## Stata
 
@@ -78,6 +81,8 @@ Or to Codex CLI (requires 0.46.0 or newer for `codex mcp add`):
 codex mcp add stata-mcp --url http://localhost:4000/mcp-streamable
 ```
 
+Restart Claude Code or Codex after adding it, since MCP tool lists don't refresh mid-session. Health check: `curl -s http://localhost:4000/health`.
+
 </details>
 
 > [!NOTE]
@@ -93,7 +98,7 @@ Full docs: https://github.com/hanlulong/stata-mcp
 
 > *"Install the econ-writing-skill from https://github.com/hanlulong/econ-writing-skill."*
 
-Restart your AI session after install, then invoke:
+Restart your AI session after install, then invoke it with `/econ-write` in Claude Code or `$econ-write` in Codex:
 
 ```
 /econ-write write the introduction for my paper on minimum-wage incidence
@@ -110,10 +115,11 @@ Works for drafts, audits, referee responses, JMPs, grant proposals, conference t
 <br>
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/hanlulong/econ-writing-skill/main/install.sh | bash
+# macOS / Linux: pick exactly one of --claude, --codex, --all
+curl -fsSL https://raw.githubusercontent.com/hanlulong/econ-writing-skill/main/scripts/install.sh | bash -s -- --global --claude
 ```
 
-Flags: `--local` (current project only), `--claude` / `--codex` (target a specific client).
+Exactly one of `--claude`, `--codex` or `--all` is required; `--local` installs for one project only. On Windows, or anywhere with Node.js and `npx`: `npx skills add hanlulong/econ-writing-skill`. Current options: [INSTALL.md](https://github.com/hanlulong/econ-writing-skill/blob/main/INSTALL.md).
 
 </details>
 
@@ -129,15 +135,17 @@ This is the cleanest setup if you have Overleaf Premium. No install required.
 
 ### Pattern 2 — overleaf-sync-now (for the sync lag)
 
-Dropbox-to-Overleaf sync runs every ~10–20 minutes. If you edit on Overleaf's web UI and then ask your AI to modify the same file locally, the AI may be working on a stale copy.
+Overleaf's Dropbox sync can take ~10–20 minutes to bring edits made on overleaf.com down to your local Dropbox folder (overleaf-sync-now's measurement; Overleaf doesn't document an interval). If you edit on Overleaf's web UI and then ask your AI to modify the same file locally, the AI may be working on a stale copy.
 
-[overleaf-sync-now](https://github.com/hanlulong/overleaf-sync-now) is a CLI + Claude Code PreToolUse hook that pulls fresh Overleaf web edits before the AI reads/edits a `.tex` / `.bib` / `.cls` / `.sty` / `.bst` file.
+[overleaf-sync-now](https://github.com/hanlulong/overleaf-sync-now) is an agent skill plus a CLI and PreToolUse hooks for Claude Code and Codex CLI that pull fresh Overleaf web edits before the AI reads/edits a `.tex` / `.bib` / `.cls` / `.sty` / `.bst` file.
 
 **Ask the AI:**
 
-> *"Install overleaf-sync-now from https://github.com/hanlulong/overleaf-sync-now using `uv tool install`, then run `overleaf-sync-now install`."*
+> *"Install overleaf-sync-now from https://github.com/hanlulong/overleaf-sync-now using `uv tool install` at its latest release tag, then run `overleaf-sync-now install`."*
 
 Restart your AI after install (`/exit` then relaunch). Verify with `overleaf-sync-now status`.
+
+In Codex CLI, also run `/hooks` once and trust the overleaf-sync-now hook; Codex skips new hooks until you do.
 
 <details>
 <summary><b>Or manually</b></summary>
@@ -149,7 +157,7 @@ Restart your AI after install (`/exit` then relaunch). Verify with `overleaf-syn
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 export PATH="$HOME/.local/bin:$PATH"
-uv tool install --from git+https://github.com/hanlulong/overleaf-sync-now overleaf-sync-now
+uv tool install --from git+https://github.com/hanlulong/overleaf-sync-now@v0.5.0 overleaf-sync-now
 overleaf-sync-now install
 ```
 
@@ -158,14 +166,16 @@ overleaf-sync-now install
 ```powershell
 irm https://astral.sh/uv/install.ps1 | iex
 $env:PATH = "$env:USERPROFILE\.local\bin;$env:PATH"
-uv tool install --from git+https://github.com/hanlulong/overleaf-sync-now overleaf-sync-now
+uv tool install --from git+https://github.com/hanlulong/overleaf-sync-now@v0.5.0 overleaf-sync-now
 overleaf-sync-now install
 ```
+
+(Swap `v0.5.0` for the latest tag in the [overleaf-sync-now README](https://github.com/hanlulong/overleaf-sync-now).)
 
 </details>
 
 > [!NOTE]
-> On Windows with Chrome 130+, run `overleaf-sync-now login` once — Chrome's App-Bound Encryption blocks silent cookie extraction.
+> If `overleaf-sync-now install` ends with **AUTH NOT YET CAPTURED** (any OS), run `overleaf-sync-now login`. This is also the fix on Windows with Chrome 127+ (App-Bound Encryption) and for Safari on macOS.
 
 ## Anything else
 

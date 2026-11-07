@@ -40,7 +40,9 @@ curl -fsSL https://chatgpt.com/codex/install.sh | sh     # Codex CLI
 curl -fsSL https://claude.ai/install.sh | bash           # Claude Code
 ```
 
-Verify with `codex --version` and `claude --version`. The first run of either tool opens a browser to authenticate against your ChatGPT or Claude account. If a command isn't found or Codex exits with no output, see [troubleshooting](docs/install.md#troubleshooting) (on some bare Windows installs Codex needs the Visual C++ runtime).
+Verify with `codex --version` and `claude --version`. The first run of either tool opens a browser to authenticate against your ChatGPT or Claude account. If a command isn't found or Codex exits with no output, see [troubleshooting](docs/install.md#troubleshooting) (older Codex npm releases could need the Visual C++ runtime on bare Windows).
+
+**Windows:** also install [Git for Windows](https://git-scm.com/downloads/win) (`winget install -e --id Git.Git`) so Claude Code can use Git Bash.
 
 → **Details:** [docs/install.md](docs/install.md) — Homebrew/npm alternatives, prerequisites, troubleshooting.
 
@@ -84,7 +86,7 @@ What that actually opts you into:
 **1. Open the terminal at your project folder.**
 
 - **Windows:** in File Explorer, navigate to the folder. Type `cmd` (or `powershell`, or `wt`) in the address bar and press Enter.
-- **Mac:** in Finder, right-click the folder → Services → New Terminal at Folder. Or `cd` from an open terminal.
+- **Mac:** in Finder, right-click the folder → Services → New Terminal at Folder (if it's missing, enable it in System Settings → Keyboard → Keyboard Shortcuts → Services). Or `cd` from an open terminal.
 
 **2. Run a 4-pane window with an AI agent in each pane** — each working on its own project or task in parallel:
 
@@ -98,7 +100,7 @@ What that actually opts you into:
 └──────────────────┴──────────────────┘
 ```
 
-**Snap four windows to quarters.** Windows: `Win+Left/Right` then `Win+Up/Down`. Mac: install [Rectangle](https://rectangleapp.com) for quarter-tiling shortcuts. Or keep all four in one terminal window with internal panes (Windows Terminal: `Alt+Shift+D`; iTerm2: `Cmd+D` / `Cmd+Shift+D`).
+**Snap four windows to quarters.** Windows: `Win+Left/Right` then `Win+Up/Down`. Mac (15+): Window → Move & Resize → Top Left/Top Right/Bottom Left/Bottom Right; for keyboard shortcuts, install [Rectangle](https://rectangleapp.com). Or keep all four in one terminal window with internal panes (Windows Terminal: `Alt+Shift+D`; iTerm2: `Cmd+D` / `Cmd+Shift+D`).
 
 **3. Resume yesterday's session** — `claude -c` or `codex resume --last` so context carries over.
 

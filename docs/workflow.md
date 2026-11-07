@@ -62,7 +62,7 @@ Open four separate terminal windows (each running `claude` or `codex` in a diffe
 | `Win+Right` then `Win+Up`   | Top-right quarter    |
 | `Win+Right` then `Win+Down` | Bottom-right quarter |
 
-**Mac:** macOS Sequoia (15+) has built-in half-screen tiling (`Fn+Ctrl+Left/Right/Up/Down`). For quarter-tiling, install [Rectangle](https://rectangleapp.com) — free, open-source, with sensible defaults out of the box.
+**Mac:** macOS Sequoia (15+) has built-in tiling: halves with `Fn+Ctrl+Left/Right/Up/Down`, and quarters from the menu bar (Window → Move & Resize → Top Left / Top Right / Bottom Left / Bottom Right, or the Quarters arrangement). Quarters have no default keyboard shortcut; for keyboard quarter-tiling, or on older macOS, install [Rectangle](https://rectangleapp.com) (free, open-source).
 
 ### Windows Terminal panes (alternative)
 
