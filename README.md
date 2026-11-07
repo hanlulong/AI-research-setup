@@ -68,7 +68,7 @@ What that actually opts you into:
   - It needs Dynamic workflows (all paid plans; on Pro, turn them on in `/config`) and uses noticeably more usage. Reach for it on complex or large projects.
   - For quick iteration, use a lower effort level; `/fast` is the same Opus ~2.5× faster but bills to usage credits on subscriptions.
 - **Auto mode for execution.**
-  - Claude Code (v2.1.283+) starts interactive sessions in `auto` when your model supports it (otherwise Manual): lower-risk tool calls run automatically after a risk and prompt-injection check, and the rest are blocked. `claude -p` scripts start in Manual. Pin it with `"defaultMode": "auto"` in user settings if you like.
+  - Claude Code (v2.1.284+) starts interactive sessions in `auto` when your model supports it (otherwise Manual): lower-risk tool calls run automatically after a risk and prompt-injection check, and the rest are blocked. `claude -p` scripts start in Manual. Pin it with `"defaultMode": "auto"` in user settings if you like.
   - Codex: `on-request` (or `never` per-project).
   - Drop to `plan` (read-only) or `acceptEdits` when you want a tighter leash.
 - **One keyboard rule for Codex.** **Enter** sends now (or *injects* mid-turn). **Tab** *queues* for the next turn.

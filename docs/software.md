@@ -157,7 +157,7 @@ In Codex CLI, also run `/hooks` once and trust the overleaf-sync-now hook; Codex
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 export PATH="$HOME/.local/bin:$PATH"
-uv tool install --from git+https://github.com/hanlulong/overleaf-sync-now@v0.5.0 overleaf-sync-now
+uv tool install --from git+https://github.com/hanlulong/overleaf-sync-now@v0.5.2 overleaf-sync-now
 overleaf-sync-now install
 ```
 
@@ -166,11 +166,11 @@ overleaf-sync-now install
 ```powershell
 irm https://astral.sh/uv/install.ps1 | iex
 $env:PATH = "$env:USERPROFILE\.local\bin;$env:PATH"
-uv tool install --from git+https://github.com/hanlulong/overleaf-sync-now@v0.5.0 overleaf-sync-now
+uv tool install --from git+https://github.com/hanlulong/overleaf-sync-now@v0.5.2 overleaf-sync-now
 overleaf-sync-now install
 ```
 
-(Swap `v0.5.0` for the latest tag in the [overleaf-sync-now README](https://github.com/hanlulong/overleaf-sync-now).)
+(Swap `v0.5.2` for the latest tag in the [overleaf-sync-now README](https://github.com/hanlulong/overleaf-sync-now).)
 
 </details>
 
