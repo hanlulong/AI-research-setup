@@ -28,14 +28,14 @@ Get both tools running with the strongest models, the right permission level, an
 
 ## Day-1 settings
 
-Out of the box, Codex prompts on request, and Claude Code (v2.1.283+) starts interactive sessions in `auto` when the model supports it (otherwise Manual). For research work, set three things deliberately:
+Out of the box, Codex prompts on request, and Claude Code (v2.1.284+) starts interactive sessions in `auto` when the model supports it (otherwise Manual). For research work, set three things deliberately:
 
 | Setting | Codex CLI | Claude Code |
 |---|---|---|
 | **File** | `~/.codex/config.toml` | `~/.claude/settings.json` |
 | **Model** | `model = "gpt-6.1-sol"` | `"model": "claude-opus-5-5"` (alias `opus`) |
 | **Deep reasoning** | `model_reasoning_effort = "xhigh"` | `/effort xhigh` (saved per model under `modelSettings`) |
-| **Permission level** | `approval_policy = "on-request"` (or `"never"` per-project) | `auto` (built-in start mode since v2.1.283; pin with `"defaultMode": "auto"`), or `"acceptEdits"` for a tighter leash |
+| **Permission level** | `approval_policy = "on-request"` (or `"never"` per-project) | `auto` (built-in start mode since v2.1.284; pin with `"defaultMode": "auto"`), or `"acceptEdits"` for a tighter leash |
 
 `~` is your home folder; on Windows that is `%USERPROFILE%` (e.g. `C:\Users\<you>`).
 
@@ -202,7 +202,7 @@ printf "[%s] %s%s  \$%.2f" \
 | `dontAsk`                               | Runs only pre-approved tools (and reads in your working directories); anything that would prompt is denied. For CI and scripts. |
 | `bypassPermissions`                     | Skips all prompts. Use only in containers / VMs / scratch dirs.                                       |
 
-**Keep `auto`.** It suits research: it keeps you moving while still pausing on anything risky. With Claude Code v2.1.283+, interactive terminal and VS Code sessions start there; `claude -p` scripts start in Manual, and a session whose model can't use auto falls back to Manual. Pin it with `"defaultMode": "auto"` in user settings. Model requirements: on the Anthropic API, Opus 4.6+, Sonnet 4.6+, Haiku 5.5 or Fable; on Bedrock, Agent Platform and Foundry, Sonnet 5+, Opus 4.7+, Haiku 5.5 or Fable. Before v2.1.283, auto was the starting mode only on Pro/Max/Ultra/Team, so run `claude update`. Want a tighter leash on a project? Override to `acceptEdits` or `plan`.
+**Keep `auto`.** It suits research: it keeps you moving while still pausing on anything risky. With Claude Code v2.1.284+, interactive terminal and VS Code sessions start there; `claude -p` scripts start in Manual, and a session whose model can't use auto falls back to Manual. Pin it with `"defaultMode": "auto"` in user settings. Model requirements: on the Anthropic API, Opus 4.6+, Sonnet 4.6+, Haiku 5.5 or Fable; on Bedrock, Agent Platform and Foundry, Sonnet 5+, Opus 4.7+, Haiku 5.5 or Fable. Before v2.1.284, auto was the starting mode only on Pro/Max/Ultra/Team, so run `claude update`. Want a tighter leash on a project? Override to `acceptEdits` or `plan`.
 
 > [!IMPORTANT]
 > **Set `auto` at the user level, not in a committed repo file.** `defaultMode: "auto"` is honored only from user (`~/.claude/settings.json`), CLI-flag, or org-policy settings. It is **ignored** in a repo's `<repo>/.claude/settings.json` or `.claude/settings.local.json` — those are repo-controllable, so a cloned repo can't silently grant itself auto. `bypassPermissions` is likewise ignored from repo settings. The reverse works fine: a committed `{ "permissions": { "defaultMode": "acceptEdits" } }` (or `"plan"`) *is* respected, so use it to tighten a shared project.
