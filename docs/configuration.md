@@ -80,6 +80,8 @@ sandbox_mode           = "read-only"
 
 The same depth-vs-speed trade-off applies here: keep `model_reasoning_effort = "xhigh"` for large or correctness-critical work. `gpt-6.1-sol`'s own default effort is `low`, so this line is what gives the depth. For quick iteration, use the read-only `fast` profile, or `/fast`, which turns on the model's Fast service tier where it has one and uses 2.5× included usage.
 
+Run `/statusline` inside Codex to pick and reorder its footer items (model, context, limits, git, …); it saves them to config.toml.
+
 ### Keyboard shortcuts
 
 The non-obvious one — **Tab vs Enter** in the TUI composer:
@@ -104,6 +106,8 @@ Other essential keys:
 ### AGENTS.md
 
 Codex's equivalent of CLAUDE.md. Project conventions, read on every session. Scaffold one with `/init` inside Codex.
+
+Claude Code v2.1.277+ also reads `AGENTS.md` when the project has no `CLAUDE.md` or `CLAUDE.local.md` (in the folder or above it). If you use both tools, keep your instructions in `AGENTS.md` and add a one-line `CLAUDE.md` containing `@AGENTS.md`; the import keeps working even if you later add a `CLAUDE.local.md`.
 
 ---
 
@@ -258,6 +262,8 @@ Project conventions Claude Code reads on every session. Locations:
 - `<repo>/CLAUDE.md` — project instructions, committed to git
 
 Use these for: build/test/lint commands, code style, folder conventions, "always do X / never do Y" rules. Keep them short — every line costs context.
+
+Using both tools? One `AGENTS.md` can serve both; see [AGENTS.md](#agentsmd).
 
 ---
 
